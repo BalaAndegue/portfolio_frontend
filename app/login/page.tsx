@@ -25,6 +25,7 @@ export default function LoginPage() {
 
     try {
       const user = await login(email, password);
+      console.log('User login response:', user);
       toast.success(`Bienvenue ${user.name} !`);
       
       if (user.role === 'admin') {

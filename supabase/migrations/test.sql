@@ -1,6 +1,6 @@
 -- Insert default admin user (password: admin123)
 INSERT INTO users (username, email, password, role, created_at, updated_at, is_active) 
-VALUES ('Bala Andegue', 'balaandeguefrancoislionnel@gmail.com', 'lionnel10', 'ADMIN', NOW(), NOW(), true)
+VALUES ('admin', 'balaandeguefrancoislionnel@gmail.com', 'admin123', 'ADMIN', NOW(), NOW(), true)
 ON CONFLICT (username) DO NOTHING;
 
 -- Insert sample profile data
@@ -105,39 +105,42 @@ WHERE p.title = techs.project_title;
 INSERT INTO certificates (title, issuer, description, issue_date, credential_id, credential_url, image_url, is_featured, sort_order, created_at, updated_at)
 VALUES 
 (
-    'AWS Certified Solutions Architect',
-    'Amazon Web Services',
-    'Validates expertise in designing distributed systems on AWS platform',
-    '2023-06-15 00:00:00',
-    'AWS-SAA-123456',
-    'https://aws.amazon.com/certification/verify',
-    'https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg',
+    'Spervised Machine Learning : Reression and Classification',
+    'Coursera',
+    'Comprehensive course on supervised machine learning techniques including regression and classification algorithms',
+    '2023-01-10 00:00:00',
+    'ML-COURSE-123456',
+    
+    'https://coursera.org/share/fc7632ea864c603bbe8bfe6fc9bf3526',
+    'https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE~KJZGNIMBQ5O7/CERTIFICATE_LANDING_PAGE~KJZGNIMBQ5O7.jpeg',
     true,
     1,
     NOW(),
     NOW()
 ),
 (
-    'Google Cloud Professional Developer',
-    'Google Cloud',
-    'Demonstrates proficiency in developing scalable applications on Google Cloud Platform',
-    '2023-03-20 00:00:00',
-    'GCP-PD-789012',
-    'https://cloud.google.com/certification',
-    'https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg',
+    'Advanced Learning Algorithms',
+    'Coursera',
+    'In-depth course on advanced learning algorithms including neural networks and deep learning',
+    '2023-02-15 00:00:00',
+    'ALGO-ADV-654321',
+    
+    'https://coursera.org/share/6297b6c9d075be3c5366e15e86f4948e',
+    'https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE~HXQ48627KYIO/CERTIFICATE_LANDING_PAGE~HXQ48627KYIO.jpeg',
     true,
     2,
     NOW(),
     NOW()
 ),
 (
-    'MongoDB Certified Developer',
-    'MongoDB Inc.',
-    'Validates skills in MongoDB database development and administration',
-    '2022-11-10 00:00:00',
-    'MDB-DEV-345678',
-    'https://university.mongodb.com/certification',
-    'https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg',
+    'Introduxtio To Data ANalysis Using Microsoft Excel',
+    'Coursera',
+    'Fundamentals of data analysis using Microsoft Excel, covering data manipulation, visualization, and basic statistical analysis',
+    '2023-03-20 00:00:00',
+    'EXCEL-DATA-789012',
+   
+    'https://coursera.org/share/e3dc6e5efb0ba76cdf1d0687674ef97c',
+    'https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE~GFLUNAY5M5XA/CERTIFICATE_LANDING_PAGE~GFLUNAY5M5XA.jpeg',
     false,
     3,
     NOW(),

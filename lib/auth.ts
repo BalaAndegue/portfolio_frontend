@@ -191,7 +191,7 @@ export async function login(username: string, password: string): Promise<User> {
     
     // Supposer que l'API retourne { token, user } ou { data: { token, user } }
     const token = data.token || data.data?.token;
-    const userData = data.user || data.data?.user || data.data;
+    const userData = data;
 
     if (!token) {
       throw new Error('Token manquant dans la réponse');

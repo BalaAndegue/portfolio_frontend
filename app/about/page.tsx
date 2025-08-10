@@ -61,7 +61,7 @@ export default function AboutPage() {
               <div className="relative w-full h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                 <Image
                   src= 'https://i.pinimg.com/736x/2c/3a/a5/2c3aa5d147d231fee6ba7be26c3e53c7.jpg'
-                  alt="Mbassi Loic Aron"
+                  alt="Bala Andegue Francois"
                   fill
                   className="object-cover"
                   priority
