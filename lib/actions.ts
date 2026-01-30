@@ -12,6 +12,18 @@ async function isAdmin() {
     return session?.user?.role === 'admin';
 }
 
+function safeJsonParse(data: any, fallback: any = []) {
+    if (!data) return fallback;
+    if (Array.isArray(data)) return data;
+    if (typeof data !== 'string') return data;
+    try {
+        const parsed = JSON.parse(data);
+        return Array.isArray(parsed) || (parsed && typeof parsed === 'object') ? parsed : fallback;
+    } catch (e) {
+        return fallback;
+    }
+}
+
 // --- Projects ---
 
 export async function getProjects(params: {
@@ -29,8 +41,8 @@ export async function getProjects(params: {
     if (status) where.status = status;
     if (search) {
         where.OR = [
-            { title: { contains: search, mode: 'insensitive' } },
-            { description: { contains: search, mode: 'insensitive' } },
+            { title: { contains: search } },
+            { description: { contains: search } },
         ];
     }
 
@@ -49,6 +61,8 @@ export async function getProjects(params: {
             ...p,
             status: p.status as 'completed' | 'in-progress' | 'planned',
             category: p.category as 'web' | 'mobile' | 'desktop' | 'ai' | 'other',
+            technologies: safeJsonParse(p.technologies),
+            images: safeJsonParse(p.images),
             createdAt: p.createdAt.toISOString(),
             updatedAt: p.updatedAt.toISOString(),
         })),
@@ -66,9 +80,11 @@ export async function getProject(id: string) {
         ...project,
         status: project.status as 'completed' | 'in-progress' | 'planned',
         category: project.category as 'web' | 'mobile' | 'desktop' | 'ai' | 'other',
+        technologies: safeJsonParse(project.technologies),
+        images: safeJsonParse(project.images),
         createdAt: project.createdAt.toISOString(),
         updatedAt: project.updatedAt.toISOString(),
-    };
+    } as Project;
 }
 
 export async function createProject(data: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) {
@@ -79,6 +95,8 @@ export async function createProject(data: Omit<Project, 'id' | 'createdAt' | 'up
             ...data,
             featured: data.featured || false,
             order: data.order || 0,
+            technologies: JSON.stringify(data.technologies) as any,
+            images: JSON.stringify(data.images) as any,
         },
     });
 
@@ -90,12 +108,14 @@ export async function createProject(data: Omit<Project, 'id' | 'createdAt' | 'up
 export async function updateProject(id: string, data: Partial<Project>) {
     if (!(await isAdmin())) throw new Error('Unauthorized');
 
+    const updateData: any = { ...data };
+    if (data.technologies) updateData.technologies = JSON.stringify(data.technologies);
+    if (data.images) updateData.images = JSON.stringify(data.images);
+    updateData.updatedAt = new Date();
+
     const project = await prisma.project.update({
         where: { id },
-        data: {
-            ...data,
-            updatedAt: new Date(),
-        },
+        data: updateData,
     });
 
     revalidatePath('/projects');
@@ -125,8 +145,8 @@ export async function getCertificates(params: {
     const where: any = {};
     if (search) {
         where.OR = [
-            { title: { contains: search, mode: 'insensitive' } },
-            { issuer: { contains: search, mode: 'insensitive' } },
+            { title: { contains: search } },
+            { issuer: { contains: search } },
         ];
     }
 
@@ -143,6 +163,7 @@ export async function getCertificates(params: {
     return {
         data: data.map((c: any) => ({
             ...c,
+            skills: safeJsonParse(c.skills),
             createdAt: c.createdAt.toISOString(),
             updatedAt: c.updatedAt.toISOString(),
         })),
@@ -161,6 +182,7 @@ export async function createCertificate(data: Omit<Certificate, 'id' | 'createdA
             ...data,
             featured: data.featured || false,
             order: data.order || 0,
+            skills: JSON.stringify(data.skills) as any,
         },
     });
 
@@ -172,12 +194,13 @@ export async function createCertificate(data: Omit<Certificate, 'id' | 'createdA
 export async function updateCertificate(id: string, data: Partial<Certificate>) {
     if (!(await isAdmin())) throw new Error('Unauthorized');
 
+    const updateData: any = { ...data };
+    if (data.skills) updateData.skills = JSON.stringify(data.skills);
+    updateData.updatedAt = new Date();
+
     const certificate = await prisma.certificate.update({
         where: { id },
-        data: {
-            ...data,
-            updatedAt: new Date(),
-        },
+        data: updateData,
     });
 
     revalidatePath('/certificates');
@@ -198,16 +221,12 @@ export async function getPersonalInfo() {
     const info = await prisma.personalInfo.findFirst();
     if (!info) return null;
 
-    // Transform Json fields back to types
-    // Assuming strict structure, but adding safety
-    const languages = (info.languages as any) || [];
-    const experience = (info.experience as any) || [];
-
     return {
         ...info,
-        languages,
-        experience,
-        createdAt: info.createdAt.toISOString(), // Ensure serializable
+        skills: safeJsonParse(info.skills),
+        languages: safeJsonParse(info.languages),
+        experience: safeJsonParse(info.experience),
+        createdAt: info.createdAt.toISOString(),
         updatedAt: info.updatedAt.toISOString()
     } as PersonalInfo;
 }
@@ -217,22 +236,19 @@ export async function updatePersonalInfo(data: Partial<PersonalInfo>) {
 
     const current = await prisma.personalInfo.findFirst();
 
+    const updateData: any = { ...data };
+    if (data.skills) updateData.skills = JSON.stringify(data.skills);
+    if (data.languages) updateData.languages = JSON.stringify(data.languages);
+    if (data.experience) updateData.experience = JSON.stringify(data.experience);
+    updateData.updatedAt = new Date();
+
     let info;
     if (current) {
         info = await prisma.personalInfo.update({
             where: { id: current.id },
-            data: {
-                ...data,
-                languages: data.languages as any,
-                experience: data.experience as any,
-                updatedAt: new Date(),
-            },
+            data: updateData,
         });
     } else {
-        // Determine required fields or use defaults if creating for first time? 
-        // Assuming 'data' has required fields if creating. 
-        // Typescript partial makes this tricky. We should cast or ensure content.
-        // For now, assume it's an update to existing seed.
         throw new Error("No profile found to update. Please seed the database.");
     }
 
@@ -240,9 +256,10 @@ export async function updatePersonalInfo(data: Partial<PersonalInfo>) {
     revalidatePath('/about');
     return {
         ...info,
-        languages: info.languages as any,
-        experience: info.experience as any,
-        createdAt: info.createdAt.toISOString(), // Ensure serializable
+        skills: safeJsonParse(info.skills),
+        languages: safeJsonParse(info.languages),
+        experience: safeJsonParse(info.experience),
+        createdAt: info.createdAt.toISOString(),
         updatedAt: info.updatedAt.toISOString()
     };
 }
@@ -256,7 +273,6 @@ export async function sendMessage(data: Omit<ContactMessage, 'id' | 'status' | '
             status: 'new',
         },
     });
-    // Notify admin?
     return {
         ...message,
         createdAt: message.createdAt.toISOString(),
