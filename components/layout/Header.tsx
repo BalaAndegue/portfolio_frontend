@@ -13,8 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { AuthService } from '@/lib/auth';
-import { User as UserType } from '@/types';
+import { useSession, signOut } from 'next-auth/react';
 import { cn } from '@/lib/utils';
 
 const navigation = [
@@ -27,17 +26,12 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [user, setUser] = useState<UserType | null>(null);
+  const { data: session } = useSession();
+  const user = session?.user;
   const pathname = usePathname();
 
-  useEffect(() => {
-    setUser(AuthService.getCurrentUser());
-  }, []);
-
   const handleLogout = () => {
-    AuthService.logout();
-    setUser(null);
-    window.location.href = '/';
+    signOut({ callbackUrl: '/' });
   };
 
   const isAdminRoute = pathname.startsWith('/admin');
@@ -52,7 +46,7 @@ export function Header() {
             </span>
           </Link>
         </div>
-        
+
         <div className="flex lg:hidden">
           <Button
             variant="ghost"
@@ -62,7 +56,7 @@ export function Header() {
             <Menu className="h-6 w-6" />
           </Button>
         </div>
-        
+
         <div className="hidden lg:flex lg:gap-x-12">
           {navigation.map((item) => (
             <Link
@@ -79,15 +73,15 @@ export function Header() {
             </Link>
           ))}
         </div>
-        
+
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-4">
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={user.avatar} alt={user.name} />
-                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                    <AvatarImage src={user.image || undefined} alt={user.name || ''} />
+                    <AvatarFallback>{(user.name || 'U').charAt(0)}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
@@ -128,7 +122,7 @@ export function Header() {
           )}
         </div>
       </nav>
-      
+
       {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden">
@@ -172,8 +166,8 @@ export function Header() {
                     <div className="space-y-4">
                       <div className="flex items-center gap-3 px-3">
                         <Avatar className="h-8 w-8">
-                          <AvatarImage src={user.avatar} alt={user.name} />
-                          <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                          <AvatarImage src={user.image || undefined} alt={user.name || ''} />
+                          <AvatarFallback>{(user.name || 'U').charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div>
                           <p className="font-medium">{user.name}</p>

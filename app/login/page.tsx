@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { login } from '@/lib/auth';
+import { signIn } from 'next-auth/react';
 import { toast } from 'sonner';
 
 export default function LoginPage() {
@@ -24,17 +24,21 @@ export default function LoginPage() {
     setError('');
 
     try {
-      const user = await login(email, password);
-      console.log('User login response:', user);
-      toast.success(`Bienvenue ${user.name} !`);
-      
-      if (user.role === 'admin') {
-        router.push('/admin');
+      const result = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (result?.error) {
+        setError('Email ou mot de passe incorrect');
       } else {
-        router.push('/');
+        toast.success('Bienvenue !');
+        router.push('/admin');
+        router.refresh();
       }
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Erreur de connexion');
+      setError('Une erreur est survenue lors de la connexion');
     } finally {
       setLoading(false);
     }
@@ -56,7 +60,7 @@ export default function LoginPage() {
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
-            
+
             <div className="space-y-2">
               <Label htmlFor="email">Username</Label>
               <Input
@@ -65,10 +69,10 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                
+
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="password">Mot de passe</Label>
               <Input
@@ -80,12 +84,12 @@ export default function LoginPage() {
                 placeholder="••••••••"
               />
             </div>
-            
+
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Connexion...' : 'Se connecter'}
             </Button>
           </form>
-          
+
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
               <Link href="/" className="font-medium text-primary hover:text-primary/80">
@@ -93,10 +97,10 @@ export default function LoginPage() {
               </Link>
             </p>
           </div>
-          
+
           <div className="mt-6 p-4 bg-muted rounded-lg">
             <p className="text-sm text-muted-foreground font-medium mb-2">Uniquement reserver a l'administrateur</p>
-          
+
           </div>
         </CardContent>
       </Card>

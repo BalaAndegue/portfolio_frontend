@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  avatar    String?
+  role      String   @default("visitor") // "admin" or "visitor"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PersonalInfo {
+  id          String   @id @default(cuid())
+  name        String
+  title       String
+  bio         String
+  about       String?
+  avatar      String
+  email       String
+  phone       String
+  location    String
+  linkedin    String?
+  github      String?
+  website     String?
+  skills      String[]
+  languages   Json?
+  experience  Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Project {
+  id              String   @id @default(cuid())
+  title           String
+  description     String
+  longDescription String?
+  image           String
+  images          String[]
+  technologies    String[]
+  category        String
+  status          String
+  githubUrl       String?
+  liveUrl         String?
+  startDate       String
+  endDate         String?
+  featured        Boolean  @default(false)
+  order           Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Certificate {
+  id            String   @id @default(cuid())
+  title         String
+  issuer        String
+  date          String
+  description   String
+  image         String?
+  credentialUrl String?
+  skills        String[]
+  featured      Boolean  @default(false)
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  status    String   @default("new") // new, read, replied
+  createdAt DateTime @default(now())
+  repliedAt DateTime?
+}

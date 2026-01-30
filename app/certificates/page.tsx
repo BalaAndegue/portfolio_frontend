@@ -1,4 +1,5 @@
-import { ApiService } from '@/lib/api';
+import { getPersonalInfo, getCertificates } from '@/lib/actions';
+import { PersonalInfo, Certificate } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
@@ -8,9 +9,9 @@ import { ExternalLink, ArrowRight, Calendar } from 'lucide-react';
 
 const CertificatesPage = async () => {
   // Récupération des données
-  const profile = await ApiService.getPersonalInfo();
-  const certificatesResponse = await ApiService.getCertificates();
-  const featuredCertificates = certificatesResponse.data;
+  const profile = (await getPersonalInfo()) as PersonalInfo;
+  const certificatesResponse = await getCertificates();
+  const featuredCertificates = certificatesResponse.data as Certificate[];
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">

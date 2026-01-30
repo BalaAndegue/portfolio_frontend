@@ -1,51 +1,33 @@
-'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Download, Github, Linkedin, Mail, ExternalLink, Calendar, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ApiService } from '@/lib/api';
-import { PersonalInfo, Project, Certificate } from '@/types';
-import { Loading } from '@/components/ui/loading';
+import { getPersonalInfo, getProjects, getCertificates } from '@/lib/actions';
+import { Project, Certificate } from '@/types';
 
-export default function HomePage() {
-  const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
-  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
-  const [featuredCertificates, setFeaturedCertificates] = useState<Certificate[]>([]);
-  const [loading, setLoading] = useState(true);
+export const dynamic = 'force-dynamic';
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const [info, projects, certificates] = await Promise.all([
-          ApiService.getPersonalInfo(),
-          ApiService.getProjects({ limit: 3 }),
-          ApiService.getCertificates({ limit: 2 })
-        ]);
-        console.log('APU RESPONSE: ',info);
-        setPersonalInfo(info);
-        setFeaturedProjects(projects.data.filter(p => p.featured));
-        setFeaturedCertificates(certificates.data.filter(c => c.featured));
-      } catch (error) {
-        console.error('Error loading data:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadData();
-  }, []);
-
-  if (loading) {
-    return <Loading />;
-  }
+export default async function HomePage() {
+  const [personalInfo, projectsRes, certificatesRes] = await Promise.all([
+    getPersonalInfo(),
+    getProjects({ limit: 3 }),
+    getCertificates({ limit: 2 })
+  ]);
 
   if (!personalInfo) {
-    return <div>Erreur lors du chargement des données</div>;
+    return <div>Erreur lors du chargement des données. Veuillez initialiser la base de données.</div>;
   }
+
+  const featuredProjects = projectsRes.data.filter((p: Project) => p.featured);
+  const featuredCertificates = certificatesRes.data.filter((c: Certificate) => c.featured);
+
+
+
+
+
 
   return (
     <div className="flex flex-col">
@@ -156,7 +138,7 @@ export default function HomePage() {
             </p>
           </div>
           <div className="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-3">
-            {featuredProjects.map((project) => (
+            {featuredProjects.map((project: Project) => (
               <Card key={project.id} className="group hover:shadow-lg transition-shadow">
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
                   <Image
@@ -202,7 +184,7 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies.slice(0, 3).map((tech) => (
+                    {project.technologies.slice(0, 3).map((tech: string) => (
                       <Badge key={tech} variant="outline" className="text-xs">
                         {tech}
                       </Badge>
@@ -246,7 +228,7 @@ export default function HomePage() {
             </p>
           </div>
           <div className="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {featuredCertificates.map((certificate) => (
+            {featuredCertificates.map((certificate: Certificate) => (
               <Card key={certificate.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -280,7 +262,7 @@ export default function HomePage() {
                     {certificate.description}
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {certificate.skills.map((skill) => (
+                    {certificate.skills.map((skill: string) => (
                       <Badge key={skill} variant="outline" className="text-xs">
                         {skill}
                       </Badge>

@@ -1,4 +1,5 @@
-import { ApiService } from '@/lib/api';
+import { getPersonalInfo, getProjects } from '@/lib/actions';
+import { Project, PersonalInfo } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
@@ -8,9 +9,9 @@ import { Github, ExternalLink, ArrowRight } from 'lucide-react';
 
 const ProjectsPage = async () => {
   // Récupération des données
-  const profile = await ApiService.getPersonalInfo();
-  const projectsResponse = await ApiService.getProjects();
-  const featuredProjects = projectsResponse.data;
+  const profile = (await getPersonalInfo()) as PersonalInfo;
+  const projectsResponse = await getProjects();
+  const featuredProjects = projectsResponse.data as Project[];
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
@@ -71,7 +72,7 @@ const ProjectsPage = async () => {
               Découvrez quelques-uns de mes projets les plus récents
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             {featuredProjects.map((project) => (
               <Card key={project.id} className="group hover:shadow-lg transition-shadow">

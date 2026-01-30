@@ -26,7 +26,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { ApiService } from '@/lib/api';
+import { getProjects, deleteProject } from '@/lib/actions';
 import { Project } from '@/types';
 import { toast } from 'sonner';
 
@@ -43,13 +43,13 @@ export default function AdminProjectsPage() {
 
   const loadProjects = async () => {
     try {
-      const response = await ApiService.getProjects({
+      const response = await getProjects({
         search: search || undefined,
         category: categoryFilter !== 'all' ? categoryFilter : undefined,
         status: statusFilter !== 'all' ? statusFilter : undefined,
         limit: 100
       });
-      setProjects(response.data);
+      setProjects(response.data as Project[]);
     } catch (error) {
       console.error('Error loading projects:', error);
       toast.error('Erreur lors du chargement des projets');
@@ -60,7 +60,7 @@ export default function AdminProjectsPage() {
 
   const handleDeleteProject = async (id: string) => {
     try {
-      await ApiService.deleteProject(id);
+      await deleteProject(id);
       setProjects(projects.filter(p => p.id !== id));
       toast.success('Projet supprimé avec succès');
     } catch (error) {
@@ -230,7 +230,7 @@ export default function AdminProjectsPage() {
                   </Badge>
                 )}
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div className="flex gap-2">
                   {project.githubUrl && (
@@ -254,7 +254,7 @@ export default function AdminProjectsPage() {
                     </a>
                   )}
                 </div>
-                
+
                 <div className="flex gap-2">
                   <Button asChild size="sm" variant="ghost">
                     <Link href={`/admin/projects/${project.id}/edit`}>
@@ -271,7 +271,7 @@ export default function AdminProjectsPage() {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Supprimer le projet</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Êtes-vous sûr de vouloir supprimer le projet "{project.title}" ? 
+                          Êtes-vous sûr de vouloir supprimer le projet "{project.title}" ?
                           Cette action est irréversible.
                         </AlertDialogDescription>
                       </AlertDialogHeader>

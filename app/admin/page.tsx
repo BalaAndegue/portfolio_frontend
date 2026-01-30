@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { FolderOpen, Award, MessageSquare, TrendingUp, Users, Calendar } from 'lucide-react';
-import { ApiService } from '@/lib/api';
+import { getProjects, getCertificates, getMessages } from '@/lib/actions';
 import { Project, Certificate } from '@/types';
 
 export default function AdminDashboard() {
@@ -19,24 +19,27 @@ export default function AdminDashboard() {
   const [recentCertificates, setRecentCertificates] = useState<Certificate[]>([]);
   const [loading, setLoading] = useState(true);
 
+
+
   useEffect(() => {
     async function loadDashboardData() {
       try {
-        const [projects, certificates] = await Promise.all([
-          ApiService.getProjects({ limit: 50 }),
-          ApiService.getCertificates({ limit: 50 })
+        const [projects, certificates, messages] = await Promise.all([
+          getProjects({ limit: 50 }),
+          getCertificates({ limit: 50 }),
+          getMessages({ limit: 10 })
         ]);
 
         setStats({
-          totalProjects: projects.data.length,
-          completedProjects: projects.data.filter(p => p.status === 'completed').length,
-          inProgressProjects: projects.data.filter(p => p.status === 'in-progress').length,
-          totalCertificates: certificates.data.length,
-          totalMessages: 0, // Mock data
+          totalProjects: projects.total,
+          completedProjects: projects.data.filter((p: any) => p.status === 'completed').length,
+          inProgressProjects: projects.data.filter((p: any) => p.status === 'in-progress').length,
+          totalCertificates: certificates.total,
+          totalMessages: messages.total,
         });
 
-        setRecentProjects(projects.data.slice(0, 5));
-        setRecentCertificates(certificates.data.slice(0, 3));
+        setRecentProjects(projects.data.slice(0, 5) as Project[]);
+        setRecentCertificates(certificates.data.slice(0, 3) as Certificate[]);
       } catch (error) {
         console.error('Error loading dashboard data:', error);
       } finally {

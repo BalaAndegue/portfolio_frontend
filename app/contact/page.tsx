@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { ApiService } from '@/lib/api';
+import { getPersonalInfo, sendMessage } from '@/lib/actions';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,8 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Mail, MapPin, Phone, User } from 'lucide-react';
 import dynamic from 'next/dynamic';
-//import { useToast } from '@/components/ui/use-toast';
 import { useToast } from '@/hooks/use-toast';
+import { PersonalInfo } from '@/types';
 
 
 // Chargement dynamique pour éviter les problèmes SSR avec Leaflet
@@ -32,10 +32,10 @@ const ContactPage = () => {
 
   useEffect(() => {
     // Récupération du profil
-    ApiService.getPersonalInfo().then(setProfile);
-    
+    getPersonalInfo().then((res) => setProfile(res));
+
     // Géolocalisation du visiteur
-    if (navigator.geolocation) {
+    if (typeof window !== 'undefined' && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           setPosition([pos.coords.latitude, pos.coords.longitude]);
@@ -54,18 +54,18 @@ const ContactPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
-      await ApiService.sendContactMessage({
+      await sendMessage({
         ...formData,
         ...(position && { position: { lat: position[0], lng: position[1] } })
-      });
-      
+      } as any);
+
       toast({
         title: "Message envoyé",
         description: "Je vous répondrai dès que possible",
       });
-      
+
       setFormData({
         name: '',
         email: '',
@@ -110,12 +110,12 @@ const ContactPage = () => {
               <MapPin className="h-5 w-5 text-gray-500" />
               <p className="text-gray-600">{profile.location}</p>
             </div>
-            
+
             <div className="flex items-center gap-3">
               <Mail className="h-5 w-5 text-gray-500" />
               <p className="text-gray-600">{profile.email}</p>
             </div>
-            
+
             <div className="flex items-center gap-3">
               <Phone className="h-5 w-5 text-gray-500" />
               <p className="text-gray-600">{profile.phone}</p>
@@ -164,7 +164,7 @@ const ContactPage = () => {
                             placeholder="Votre nom"
                             required
                             value={formData.name}
-                            onChange={(e) => setFormData({...formData, name: e.target.value})}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             className="pl-10"
                           />
                         </div>
@@ -182,7 +182,7 @@ const ContactPage = () => {
                             placeholder="votre@email.com"
                             required
                             value={formData.email}
-                            onChange={(e) => setFormData({...formData, email: e.target.value})}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             className="pl-10"
                           />
                         </div>
@@ -198,7 +198,7 @@ const ContactPage = () => {
                           placeholder="Objet du message"
                           required
                           value={formData.subject}
-                          onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                          onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                         />
                       </div>
 
@@ -212,7 +212,7 @@ const ContactPage = () => {
                           rows={5}
                           required
                           value={formData.message}
-                          onChange={(e) => setFormData({...formData, message: e.target.value})}
+                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         />
                       </div>
 
@@ -230,9 +230,9 @@ const ContactPage = () => {
                   </CardHeader>
                   <CardContent className="h-full min-h-[400px] p-0">
                     {position && (
-                      <MapWithNoSSR 
-                        center={position} 
-                        zoom={13} 
+                      <MapWithNoSSR
+                        center={position}
+                        zoom={13}
                         className="rounded-b-lg h-full w-full"
                       />
                     )}

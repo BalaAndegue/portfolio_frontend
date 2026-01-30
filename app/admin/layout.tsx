@@ -3,20 +3,19 @@
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { 
-  LayoutDashboard, 
-  User, 
-  FolderOpen, 
-  Award, 
-  MessageSquare, 
+import {
+  LayoutDashboard,
+  User,
+  FolderOpen,
+  Award,
+  MessageSquare,
   Settings,
   Menu,
   X
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { AuthService } from '@/lib/auth';
-import { LoadingPage } from '@/components/ui/loading';
 import { cn } from '@/lib/utils';
+import { useSession } from 'next-auth/react';
 
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -32,29 +31,30 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [loading, setLoading] = useState(true);
+  const { data: session, status } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    const user = AuthService.getCurrentUser();
-    if (!user || user.role !== 'admin') {
+    if (status === 'unauthenticated') {
       router.push('/login');
-      return;
     }
-    setLoading(false);
-  }, [router]);
+  }, [status, router]);
 
-  if (loading) {
-    return <LoadingPage />;
+  if (status === 'loading') {
+    return <div className="h-screen flex items-center justify-center">Chargement...</div>;
+  }
+
+  if (!session || session.user?.role !== 'admin') {
+    return null;
   }
 
   return (
     <div className="h-screen flex overflow-hidden bg-background">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         >
@@ -80,7 +80,7 @@ export default function AdminLayout({
             <X className="h-5 w-5" />
           </Button>
         </div>
-        
+
         <nav className="mt-8 px-4">
           <ul className="space-y-2">
             {navigation.map((item) => {
@@ -105,7 +105,7 @@ export default function AdminLayout({
             })}
           </ul>
         </nav>
-        
+
         <div className="absolute bottom-4 left-4 right-4">
           <Button asChild variant="outline" className="w-full">
             <Link href="/">
@@ -130,7 +130,7 @@ export default function AdminLayout({
           </Link>
           <div className="w-10" /> {/* Spacer */}
         </header>
-        
+
         <main className="flex-1 overflow-y-auto">
           {children}
         </main>
