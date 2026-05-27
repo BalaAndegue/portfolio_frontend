@@ -70,24 +70,109 @@ async function main() {
     });
     console.log('Personal Info seeded');
 
-    // Placeholder project — will be replaced in next commit
+    // === PROJETS RÉELS ===
+
     await prisma.project.create({
         data: {
-            title: 'E-commerce Platform',
-            description: 'Plateforme e-commerce moderne avec Next.js et Stripe',
-            longDescription: 'Une plateforme complète incluant la gestion du panier, les paiements sécurisés et un dashboard admin.',
-            image: 'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=800',
+            title: 'XXCM – Application de Composition de Cours',
+            description: 'Plateforme web fullstack pour la composition du contenu de cours et le suivi des participants. Gestion des modules, chapitres, évaluations et progression en temps réel.',
+            longDescription: 'XXCM est une application web complète permettant aux formateurs de composer le contenu pédagogique (modules, chapitres, exercices) et aux administrateurs de suivre la progression de chaque participant. Tableau de bord en temps réel, exports PDF, notifications push, rôles et permissions.',
+            image: 'https://images.pexels.com/photos/5905709/pexels-photo-5905709.jpeg?auto=compress&cs=tinysrgb&w=800',
             images: JSON.stringify([
-                'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=800'
+                'https://images.pexels.com/photos/5905709/pexels-photo-5905709.jpeg?auto=compress&cs=tinysrgb&w=800',
+                'https://images.pexels.com/photos/4050315/pexels-photo-4050315.jpeg?auto=compress&cs=tinysrgb&w=800',
             ]) as any,
-            technologies: JSON.stringify(['React', 'Next.js', 'Tailwind CSS', 'Stripe', 'Node.js']) as any,
+            technologies: JSON.stringify(['Next.js', 'TypeScript', 'Prisma', 'PostgreSQL', 'Tailwind CSS', 'NextAuth', 'Recharts']) as any,
             category: 'web',
-            status: 'completed',
-            startDate: '2023-01',
+            status: 'in-progress',
+            githubUrl: 'https://github.com/BalaAndegue',
+            startDate: '2024-03',
             featured: true,
             order: 1,
         }
     });
+
+    await prisma.project.create({
+        data: {
+            title: 'Custom World – Plateforme E-commerce',
+            description: "Site web e-commerce complet avec catalogue produits personnalisé, panier, paiement sécurisé et dashboard vendeur. Expérience d'achat 100% custom.",
+            longDescription: "Custom World est une plateforme e-commerce sur mesure offrant un catalogue produits avec filtres avancés, un système de panier persistant, l'intégration de paiement (mobile money + carte), un espace vendeur avec analytics des ventes, et un système d'avis clients.",
+            image: 'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=800',
+            images: JSON.stringify([
+                'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=800',
+                'https://images.pexels.com/photos/5632399/pexels-photo-5632399.jpeg?auto=compress&cs=tinysrgb&w=800',
+            ]) as any,
+            technologies: JSON.stringify(['React', 'Next.js', 'Node.js', 'PostgreSQL', 'Stripe', 'Tailwind CSS', 'Prisma']) as any,
+            category: 'web',
+            status: 'completed',
+            githubUrl: 'https://github.com/BalaAndegue',
+            startDate: '2023-09',
+            endDate: '2024-01',
+            featured: true,
+            order: 2,
+        }
+    });
+
+    await prisma.project.create({
+        data: {
+            title: 'CollabSpace – Outil de Travail Collaboratif',
+            description: "Plateforme web pour le travail collaboratif en équipe : gestion de projets, partage de documents, messagerie en temps réel et tableau Kanban.",
+            longDescription: "CollabSpace est un espace de travail collaboratif permettant à des équipes de gérer des projets avec des tableaux Kanban, partager des fichiers, communiquer via une messagerie instantanée (WebSocket), et suivre les deadlines avec un calendrier partagé.",
+            image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800',
+            images: JSON.stringify([
+                'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800',
+            ]) as any,
+            technologies: JSON.stringify(['React', 'Node.js', 'Socket.io', 'PostgreSQL', 'Express', 'Tailwind CSS']) as any,
+            category: 'web',
+            status: 'in-progress',
+            githubUrl: 'https://github.com/BalaAndegue',
+            startDate: '2024-06',
+            featured: true,
+            order: 3,
+        }
+    });
+
+    await prisma.project.create({
+        data: {
+            title: 'YOWYOB ERP – Module Gestion des Tiers',
+            description: "Module de gestion des tiers (clients, fournisseurs, partenaires) pour l'ERP YOWYOB. Architecture microservices avec Spring Boot et interface React.",
+            longDescription: "Ce module est un composant clé de l'ERP YOWYOB permettant la gestion complète des tiers: création/modification de fiches clients, fournisseurs et partenaires, historique des transactions, gestion des contrats, intégration avec les autres modules de l'ERP via API REST.",
+            image: 'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800',
+            images: JSON.stringify([
+                'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800',
+            ]) as any,
+            technologies: JSON.stringify(['Java', 'Spring Boot', 'React', 'PostgreSQL', 'Docker', 'REST API', 'Microservices']) as any,
+            category: 'web',
+            status: 'completed',
+            githubUrl: 'https://github.com/BalaAndegue',
+            startDate: '2024-01',
+            endDate: '2024-05',
+            featured: false,
+            order: 4,
+        }
+    });
+
+    await prisma.project.create({
+        data: {
+            title: 'Portfolio Full Stack',
+            description: "Portfolio professionnel 100% fullstack Next.js avec Prisma/SQLite, authentification NextAuth, panel admin et animations style développeur senior.",
+            longDescription: "Ce portfolio est lui-même un projet fullstack complet : Next.js App Router, Prisma ORM avec SQLite, NextAuth pour l'authentification admin, server actions, composants Radix UI + Tailwind CSS, animations Framer Motion, déployable sur Vercel.",
+            image: 'https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=800',
+            images: JSON.stringify([
+                'https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=800',
+            ]) as any,
+            technologies: JSON.stringify(['Next.js', 'TypeScript', 'Prisma', 'SQLite', 'NextAuth', 'Tailwind CSS', 'Framer Motion']) as any,
+            category: 'web',
+            status: 'completed',
+            githubUrl: 'https://github.com/BalaAndegue',
+            startDate: '2024-10',
+            endDate: '2024-12',
+            featured: false,
+            order: 5,
+        }
+    });
+
+    console.log('Projects seeded');
 
     // Placeholder certificate — will be replaced in next commit
     await prisma.certificate.create({
@@ -103,7 +188,6 @@ async function main() {
         }
     });
 
-    console.log('Projects seeded');
     console.log('Certificates seeded');
 }
 
