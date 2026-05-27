@@ -5,16 +5,12 @@ import bcrypt from 'bcryptjs';
 async function main() {
     console.log('Start seeding (SQLite version) ...');
 
-    // Reset Database to ensure fresh start (crucial for SQLite migration)
     await prisma.certificate.deleteMany();
     await prisma.project.deleteMany();
     await prisma.personalInfo.deleteMany();
-    // Keep users to avoid logout if same password
-    // await prisma.user.deleteMany();
 
-    // Create Admin User
     const password = await bcrypt.hash('admin123', 10);
-    const admin = await prisma.user.upsert({
+    await prisma.user.upsert({
         where: { email: 'admin@example.com' },
         update: {},
         create: {
@@ -26,23 +22,24 @@ async function main() {
     });
     console.log('Admin checked/created');
 
-    // Personal Info
-    const personalInfo = await prisma.personalInfo.create({
+    await prisma.personalInfo.create({
         data: {
-            name: 'Bala Andegue',
-            title: 'Développeur Full Stack & Architecte Solutions',
-            bio: "Passionné par les technologies web modernes avec plus de 5 ans d'expérience dans le développement d'applications performantes et scalables.",
+            name: 'Bala Andegue François Lionnel',
+            title: 'Étudiant en Génie Informatique 4ème année | Développeur Full Stack & IA',
+            bio: "Passionné par les systèmes, le développement web fullstack et l'intelligence artificielle. Spécialisé en React/Next.js, Spring Boot, Python et Machine Learning.",
+            about: "Étudiant en 4ème année de Génie Informatique, je construis des applications web performantes et des systèmes intelligents. Mon expérience couvre le frontend (React, Next.js), le backend (Node.js, Spring Boot, Python), les bases de données (PostgreSQL, SQLite) et le Machine Learning. Je travaille sur des projets réels comme des ERP, des plateformes e-commerce et des outils collaboratifs.",
             email: 'balaandeguefrancoislionnel@gmail.com',
             phone: '+237 656 616 751',
-            location: 'CAMEROUN, Yaounde',
+            location: 'Yaoundé, Cameroun',
             linkedin: 'https://www.linkedin.com/in/fran%C3%A7ois-lionnel-bala-andegue-0118612b2',
             github: 'https://github.com/BalaAndegue',
-            website: 'https://johndoe.dev',
+            website: 'https://balaandegue.dev',
             avatar: 'https://lh3.googleusercontent.com/a/ACg8ocLPBpiO162KoSOj0kwSHsJzbq2AE0cWeCXXndUR67WruxE8I6U=s288-c-no',
             skills: JSON.stringify([
-                'JavaScript', 'TypeScript', 'React', 'Next.js', 'Python',
-                'Java', 'Spring Boot', 'PostgreSQL', 'Docker',
-                'Kubernetes', 'GraphQL', 'REST API'
+                'JavaScript', 'TypeScript', 'React', 'Next.js', 'Node.js',
+                'Python', 'Java', 'Spring Boot', 'PostgreSQL', 'SQLite',
+                'Prisma', 'Docker', 'Git', 'REST API', 'GraphQL',
+                'Machine Learning', 'Tailwind CSS', 'Linux'
             ]) as any,
             languages: JSON.stringify([
                 { name: 'Français', level: 'Natif' },
@@ -51,19 +48,29 @@ async function main() {
             experience: JSON.stringify([
                 {
                     id: 'exp1',
-                    title: 'Full Stack Developer',
-                    company: 'Tech Corp',
+                    title: 'Développeur Full Stack',
+                    company: 'YOWYOB',
                     location: 'Yaoundé, Cameroun',
-                    startDate: '2022-01',
-                    description: 'Développement d\'architectures microservices et interfaces React réactives.',
-                    skills: ['React', 'Node.js', 'PostgreSQL']
+                    startDate: '2024-01',
+                    description: "Développement du module Gestion des Tiers pour l'ERP YOWYOB. Architecture microservices, API REST Spring Boot, frontend React.",
+                    skills: ['React', 'Spring Boot', 'PostgreSQL', 'Docker']
+                },
+                {
+                    id: 'exp2',
+                    title: 'Développeur Web',
+                    company: 'Data Afrique Hub',
+                    location: 'Yaoundé, Cameroun',
+                    startDate: '2023-06',
+                    endDate: '2023-12',
+                    description: 'Formation intensive en Data Science et Machine Learning. Analyse de données, modèles ML, visualisation.',
+                    skills: ['Python', 'Machine Learning', 'Data Analysis']
                 }
             ]) as any,
         },
     });
     console.log('Personal Info seeded');
 
-    // Projects
+    // Placeholder project — will be replaced in next commit
     await prisma.project.create({
         data: {
             title: 'E-commerce Platform',
@@ -81,9 +88,8 @@ async function main() {
             order: 1,
         }
     });
-    console.log('Projects seeded');
 
-    // Certificates
+    // Placeholder certificate — will be replaced in next commit
     await prisma.certificate.create({
         data: {
             title: 'AWS Certified Solutions Architect',
@@ -96,6 +102,8 @@ async function main() {
             order: 1,
         }
     });
+
+    console.log('Projects seeded');
     console.log('Certificates seeded');
 }
 
