@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { getPersonalInfo, getProjects, getCertificates } from '@/lib/actions';
 import { Project, Certificate } from '@/types';
+import { TechKeyboard } from '@/components/animations/TechKeyboard';
+import { CodeFlash } from '@/components/animations/CodeFlash';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,8 +38,11 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col">
-      {/* ── Hero Section — two-column layout ── */}
+      {/* ── Hero Section ── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 py-20 sm:py-28 min-h-[92vh] flex items-center">
+        {/* Animated assembly code flashes */}
+        <CodeFlash />
+
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(45deg,transparent_25%,rgba(68,68,68,.08)_50%,transparent_75%,transparent)] bg-[length:20px_20px]" />
 
         <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 w-full">
@@ -54,6 +59,14 @@ export default async function HomePage() {
                     priority
                   />
                 </div>
+              </div>
+
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 mb-6">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                </span>
+                <span className="text-sm font-medium text-primary">Disponible pour des projets</span>
               </div>
 
               <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl leading-tight">
@@ -90,40 +103,31 @@ export default async function HomePage() {
                 {personalInfo.github && (
                   <a href={personalInfo.github} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
-                    <Github className="h-5 w-5" />
-                    GitHub
+                    <Github className="h-5 w-5" />GitHub
                   </a>
                 )}
                 {personalInfo.linkedin && (
                   <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
-                    <Linkedin className="h-5 w-5" />
-                    LinkedIn
+                    <Linkedin className="h-5 w-5" />LinkedIn
                   </a>
                 )}
                 <a href={`mailto:${personalInfo.email}`}
                   className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
-                  <Mail className="h-5 w-5" />
-                  Email
+                  <Mail className="h-5 w-5" />Email
                 </a>
               </div>
             </div>
 
-            {/* Right – tech stack */}
+            {/* Right – animated keyboard + stats */}
             <div className="flex flex-col items-center gap-8">
-              <div className="rounded-2xl border border-border/60 bg-card/40 backdrop-blur-sm p-6 shadow-2xl w-full">
+              <div className="rounded-2xl border border-border/60 bg-card/40 backdrop-blur-sm p-6 shadow-2xl">
                 <p className="text-center text-xs font-mono text-muted-foreground mb-4 tracking-widest uppercase">
                   {'<'} Ma Stack Technique {'>'}
                 </p>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {personalInfo.skills.map((skill) => (
-                    <Badge key={skill} variant="secondary" className="text-xs py-1.5 px-3">
-                      {skill}
-                    </Badge>
-                  ))}
-                </div>
+                <TechKeyboard />
                 <p className="text-center text-xs font-mono text-muted-foreground mt-4 opacity-50">
-                  // Technologies maîtrisées
+                  // Each key = a tool I use daily
                 </p>
               </div>
 
@@ -209,9 +213,7 @@ export default async function HomePage() {
                     </div>
                   </div>
                   <CardTitle className="line-clamp-2 text-base">{project.title}</CardTitle>
-                  <CardDescription className="line-clamp-2 text-xs">
-                    {project.description}
-                  </CardDescription>
+                  <CardDescription className="line-clamp-2 text-xs">{project.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-1.5 mb-4">
