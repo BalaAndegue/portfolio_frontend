@@ -70,8 +70,6 @@ async function main() {
     });
     console.log('Personal Info seeded');
 
-    // === PROJETS RÉELS ===
-
     await prisma.project.create({
         data: {
             title: 'XXCM – Application de Composition de Cours',
@@ -174,17 +172,88 @@ async function main() {
 
     console.log('Projects seeded');
 
-    // Placeholder certificate — will be replaced in next commit
+    // === CERTIFICATIONS RÉELLES ===
+
     await prisma.certificate.create({
         data: {
-            title: 'AWS Certified Solutions Architect',
-            issuer: 'Amazon Web Services',
-            date: '2023-05-15T00:00:00.000Z',
-            description: 'Certification démontrant les capacités de conception d\'architectures sur le Cloud AWS.',
-            image: 'https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?auto=compress&cs=tinysrgb&w=400',
-            skills: JSON.stringify(['Cloud Architecture', 'AWS', 'Security', 'Scalability']) as any,
+            title: 'Advanced Learning Algorithms',
+            issuer: 'Stanford Online (DeepLearning.AI)',
+            date: '2025-08-01T00:00:00.000Z',
+            description: 'Cours avancé sur les algorithmes d\'apprentissage automatique couvrant les réseaux de neurones, le backpropagation, les arbres de décision et le boosting.',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/200px-Stanford_Cardinal_logo.svg.png',
+            credentialUrl: 'https://www.coursera.org/account/accomplishments',
+            skills: JSON.stringify(['Machine Learning', 'Neural Networks', 'TensorFlow', 'Python', 'Deep Learning']) as any,
             featured: true,
             order: 1,
+        }
+    });
+
+    await prisma.certificate.create({
+        data: {
+            title: 'Certificat de fin de formation DAH',
+            issuer: 'Data Afrique Hub',
+            date: '2025-12-01T00:00:00.000Z',
+            description: 'Formation intensive en Data Science et Intelligence Artificielle. Compétences en analyse des données, apprentissage automatique, visualisation et Big Data.',
+            image: 'https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?auto=compress&cs=tinysrgb&w=400',
+            skills: JSON.stringify(['Analyse des données', 'Apprentissage automatique', 'Python', 'Visualisation']) as any,
+            featured: true,
+            order: 2,
+        }
+    });
+
+    await prisma.certificate.create({
+        data: {
+            title: 'Foundations of Data Science',
+            issuer: 'Google',
+            date: '2024-09-01T00:00:00.000Z',
+            description: 'Fondamentaux de la Data Science : exploration de données, statistiques descriptives, Python pour l\'analyse de données et communication des résultats.',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/272px-Google_2015_logo.svg.png',
+            credentialUrl: 'https://www.coursera.org/account/accomplishments',
+            skills: JSON.stringify(['Data Science', 'Python', 'Statistics', 'Data Analysis']) as any,
+            featured: false,
+            order: 3,
+        }
+    });
+
+    await prisma.certificate.create({
+        data: {
+            title: 'Foundations: Data, Data, Everywhere',
+            issuer: 'Google',
+            date: '2024-07-01T00:00:00.000Z',
+            description: 'Introduction à l\'analyse de données avec Google : collecte, transformation, visualisation et prise de décision basée sur les données.',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/272px-Google_2015_logo.svg.png',
+            credentialUrl: 'https://www.coursera.org/account/accomplishments',
+            skills: JSON.stringify(['Data Analysis', 'Spreadsheets', 'SQL', 'Tableau', 'R']) as any,
+            featured: false,
+            order: 4,
+        }
+    });
+
+    await prisma.certificate.create({
+        data: {
+            title: 'HTML, CSS, and JavaScript for Web Developers',
+            issuer: 'The Johns Hopkins University',
+            date: '2023-11-01T00:00:00.000Z',
+            description: 'Maîtrise des fondamentaux du développement web : HTML5 sémantique, CSS3 responsive, JavaScript ES6+ et intégration d\'APIs REST.',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Johns_Hopkins_University_logo.svg/240px-Johns_Hopkins_University_logo.svg.png',
+            credentialUrl: 'https://www.coursera.org/account/accomplishments',
+            skills: JSON.stringify(['HTML5', 'CSS3', 'JavaScript', 'Responsive Design', 'REST API']) as any,
+            featured: false,
+            order: 5,
+        }
+    });
+
+    await prisma.certificate.create({
+        data: {
+            title: 'Introduction to Large Language Models',
+            issuer: 'Google Cloud Skills Boost',
+            date: '2024-03-01T00:00:00.000Z',
+            description: 'Introduction aux grands modèles de langage (LLM) : architecture Transformer, fine-tuning, prompt engineering et déploiement sur Google Cloud.',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/272px-Google_2015_logo.svg.png',
+            credentialUrl: 'https://www.cloudskillsboost.google',
+            skills: JSON.stringify(['LLM', 'Prompt Engineering', 'Google Cloud', 'Generative AI', 'Transformer']) as any,
+            featured: false,
+            order: 6,
         }
     });
 
