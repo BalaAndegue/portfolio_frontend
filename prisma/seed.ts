@@ -3,7 +3,7 @@ import { prisma } from '../lib/prisma';
 import bcrypt from 'bcryptjs';
 
 async function main() {
-    console.log('Start seeding (SQLite version) ...');
+    console.log('Start seeding ...');
 
     await prisma.certificate.deleteMany();
     await prisma.project.deleteMany();
@@ -20,14 +20,13 @@ async function main() {
             role: 'admin',
         },
     });
-    console.log('Admin checked/created');
 
     await prisma.personalInfo.create({
         data: {
             name: 'Bala Andegue François Lionnel',
             title: 'Étudiant en Génie Informatique 4ème année | Développeur Full Stack & IA',
             bio: "Passionné par les systèmes, le développement web fullstack et l'intelligence artificielle. Spécialisé en React/Next.js, Spring Boot, Python et Machine Learning.",
-            about: "Étudiant en 4ème année de Génie Informatique, je construis des applications web performantes et des systèmes intelligents. Mon expérience couvre le frontend (React, Next.js), le backend (Node.js, Spring Boot, Python), les bases de données (PostgreSQL, SQLite) et le Machine Learning. Je travaille sur des projets réels comme des ERP, des plateformes e-commerce et des outils collaboratifs.",
+            about: "Étudiant en 4ème année de Génie Informatique à Yaoundé, je construis des applications web performantes et des systèmes intelligents. Mon expérience couvre le frontend (React, Next.js), le backend (Node.js, Spring Boot, Python), les bases de données (PostgreSQL, SQLite), l'intégration continue (CI/CD) et le Machine Learning. 69 dépôts GitHub · 5 organisations · ~1070 commits sur la dernière année.",
             email: 'balaandeguefrancoislionnel@gmail.com',
             phone: '+237 656 616 751',
             location: 'Yaoundé, Cameroun',
@@ -39,7 +38,7 @@ async function main() {
                 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Node.js',
                 'Python', 'Java', 'Spring Boot', 'PostgreSQL', 'SQLite',
                 'Prisma', 'Docker', 'Git', 'REST API', 'GraphQL',
-                'Machine Learning', 'Tailwind CSS', 'Linux'
+                'Machine Learning', 'Tailwind CSS', 'Linux', 'CI/CD', 'Microservices'
             ]) as any,
             languages: JSON.stringify([
                 { name: 'Français', level: 'Natif' },
@@ -68,22 +67,23 @@ async function main() {
             ]) as any,
         },
     });
-    console.log('Personal Info seeded');
+
+    // ═══════════════════════════════════════
+    // PROJETS RÉELS ACTIFS
+    // ═══════════════════════════════════════
 
     await prisma.project.create({
         data: {
             title: 'XXCM – Application de Composition de Cours',
             description: 'Plateforme web fullstack pour la composition du contenu de cours et le suivi des participants. Gestion des modules, chapitres, évaluations et progression en temps réel.',
-            longDescription: 'XXCM est une application web complète permettant aux formateurs de composer le contenu pédagogique (modules, chapitres, exercices) et aux administrateurs de suivre la progression de chaque participant. Tableau de bord en temps réel, exports PDF, notifications push, rôles et permissions.',
-            image: 'https://images.pexels.com/photos/5905709/pexels-photo-5905709.jpeg?auto=compress&cs=tinysrgb&w=800',
-            images: JSON.stringify([
-                'https://images.pexels.com/photos/5905709/pexels-photo-5905709.jpeg?auto=compress&cs=tinysrgb&w=800',
-                'https://images.pexels.com/photos/4050315/pexels-photo-4050315.jpeg?auto=compress&cs=tinysrgb&w=800',
-            ]) as any,
-            technologies: JSON.stringify(['Next.js', 'TypeScript', 'Prisma', 'PostgreSQL', 'Tailwind CSS', 'NextAuth', 'Recharts']) as any,
+            longDescription: 'XXCM est une application web complète permettant aux formateurs de composer le contenu pédagogique (modules, chapitres, exercices) et aux administrateurs de suivre la progression de chaque participant. Tableau de bord en temps réel, exports, notifications push, rôles et permissions. Application internationalisée (fr/en), déployée sur Vercel.',
+            image: '/xccm.png',
+            images: JSON.stringify(['/xccm.png']) as any,
+            technologies: JSON.stringify(['Next.js', 'TypeScript', 'Prisma', 'PostgreSQL', 'Tailwind CSS', 'NextAuth', 'i18n']) as any,
             category: 'web',
             status: 'in-progress',
             githubUrl: 'https://github.com/BalaAndegue',
+            liveUrl: 'https://frontend-xccm-12027.vercel.app/fr',
             startDate: '2024-03',
             featured: true,
             order: 1,
@@ -92,22 +92,38 @@ async function main() {
 
     await prisma.project.create({
         data: {
+            title: 'EPUCBITOTOL – Plateforme Éducative',
+            description: "Plateforme web éducative internationale avec support multilingue (fr/en). Gestion des cours, des étudiants et des ressources pédagogiques avec une interface moderne.",
+            longDescription: "EPUCBITOTOL est une plateforme éducative complète développée avec Next.js App Router et l'internationalisation (i18n). Elle offre la gestion des cours, des inscriptions, des ressources pédagogiques et un tableau de bord administrateur. Déployée sur Vercel avec support multilingue.",
+            image: '/epuc_bitotol.png',
+            images: JSON.stringify(['/epuc_bitotol.png']) as any,
+            technologies: JSON.stringify(['Next.js', 'TypeScript', 'Tailwind CSS', 'i18n', 'Vercel', 'Prisma']) as any,
+            category: 'web',
+            status: 'in-progress',
+            githubUrl: 'https://github.com/BalaAndegue',
+            liveUrl: 'https://epucbitotol.vercel.app/fr',
+            startDate: '2024-05',
+            featured: true,
+            order: 2,
+        }
+    });
+
+    await prisma.project.create({
+        data: {
             title: 'Custom World – Plateforme E-commerce',
             description: "Site web e-commerce complet avec catalogue produits personnalisé, panier, paiement sécurisé et dashboard vendeur. Expérience d'achat 100% custom.",
-            longDescription: "Custom World est une plateforme e-commerce sur mesure offrant un catalogue produits avec filtres avancés, un système de panier persistant, l'intégration de paiement (mobile money + carte), un espace vendeur avec analytics des ventes, et un système d'avis clients.",
-            image: 'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=800',
-            images: JSON.stringify([
-                'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=800',
-                'https://images.pexels.com/photos/5632399/pexels-photo-5632399.jpeg?auto=compress&cs=tinysrgb&w=800',
-            ]) as any,
+            longDescription: "Custom World est une plateforme e-commerce sur mesure offrant un catalogue produits avec filtres avancés, un système de panier persistant, l'intégration de paiement (mobile money + carte), un espace vendeur avec analytics des ventes, et un système d'avis clients. Actuellement en ligne.",
+            image: '/customwolrd.png',
+            images: JSON.stringify(['/customwolrd.png', '/customworld1.png']) as any,
             technologies: JSON.stringify(['React', 'Next.js', 'Node.js', 'PostgreSQL', 'Stripe', 'Tailwind CSS', 'Prisma']) as any,
             category: 'web',
             status: 'completed',
             githubUrl: 'https://github.com/BalaAndegue',
+            liveUrl: 'https://customworld.vercel.app/',
             startDate: '2023-09',
             endDate: '2024-01',
             featured: true,
-            order: 2,
+            order: 3,
         }
     });
 
@@ -125,8 +141,8 @@ async function main() {
             status: 'in-progress',
             githubUrl: 'https://github.com/BalaAndegue',
             startDate: '2024-06',
-            featured: true,
-            order: 3,
+            featured: false,
+            order: 4,
         }
     });
 
@@ -146,7 +162,7 @@ async function main() {
             startDate: '2024-01',
             endDate: '2024-05',
             featured: false,
-            order: 4,
+            order: 5,
         }
     });
 
@@ -166,23 +182,25 @@ async function main() {
             startDate: '2024-10',
             endDate: '2024-12',
             featured: false,
-            order: 5,
+            order: 6,
         }
     });
 
     console.log('Projects seeded');
 
-    // === CERTIFICATIONS RÉELLES ===
+    // ═══════════════════════════════════════
+    // CERTIFICATIONS avec vrais logos locaux
+    // ═══════════════════════════════════════
 
     await prisma.certificate.create({
         data: {
             title: 'Advanced Learning Algorithms',
             issuer: 'Stanford Online (DeepLearning.AI)',
             date: '2025-08-01T00:00:00.000Z',
-            description: 'Cours avancé sur les algorithmes d\'apprentissage automatique couvrant les réseaux de neurones, le backpropagation, les arbres de décision et le boosting.',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/200px-Stanford_Cardinal_logo.svg.png',
+            description: 'Cours avancé couvrant les réseaux de neurones profonds, le backpropagation, les arbres de décision, le boosting (XGBoost) et les bonnes pratiques ML.',
+            image: '/logos/stanford.svg',
             credentialUrl: 'https://www.coursera.org/account/accomplishments',
-            skills: JSON.stringify(['Machine Learning', 'Neural Networks', 'TensorFlow', 'Python', 'Deep Learning']) as any,
+            skills: JSON.stringify(['Machine Learning', 'Neural Networks', 'TensorFlow', 'Python', 'Deep Learning', 'XGBoost']) as any,
             featured: true,
             order: 1,
         }
@@ -194,8 +212,8 @@ async function main() {
             issuer: 'Data Afrique Hub',
             date: '2025-12-01T00:00:00.000Z',
             description: 'Formation intensive en Data Science et Intelligence Artificielle. Compétences en analyse des données, apprentissage automatique, visualisation et Big Data.',
-            image: 'https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?auto=compress&cs=tinysrgb&w=400',
-            skills: JSON.stringify(['Analyse des données', 'Apprentissage automatique', 'Python', 'Visualisation']) as any,
+            image: '/logos/data-afrique-hub.svg',
+            skills: JSON.stringify(['Analyse des données', 'Apprentissage automatique', 'Python', 'Visualisation', 'Big Data']) as any,
             featured: true,
             order: 2,
         }
@@ -206,8 +224,8 @@ async function main() {
             title: 'Foundations of Data Science',
             issuer: 'Google',
             date: '2024-09-01T00:00:00.000Z',
-            description: 'Fondamentaux de la Data Science : exploration de données, statistiques descriptives, Python pour l\'analyse de données et communication des résultats.',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/272px-Google_2015_logo.svg.png',
+            description: 'Fondamentaux de la Data Science : exploration de données, statistiques descriptives, Python pour l\'analyse et communication des résultats.',
+            image: '/logos/google.svg',
             credentialUrl: 'https://www.coursera.org/account/accomplishments',
             skills: JSON.stringify(['Data Science', 'Python', 'Statistics', 'Data Analysis']) as any,
             featured: false,
@@ -221,7 +239,7 @@ async function main() {
             issuer: 'Google',
             date: '2024-07-01T00:00:00.000Z',
             description: 'Introduction à l\'analyse de données avec Google : collecte, transformation, visualisation et prise de décision basée sur les données.',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/272px-Google_2015_logo.svg.png',
+            image: '/logos/google.svg',
             credentialUrl: 'https://www.coursera.org/account/accomplishments',
             skills: JSON.stringify(['Data Analysis', 'Spreadsheets', 'SQL', 'Tableau', 'R']) as any,
             featured: false,
@@ -235,7 +253,7 @@ async function main() {
             issuer: 'The Johns Hopkins University',
             date: '2023-11-01T00:00:00.000Z',
             description: 'Maîtrise des fondamentaux du développement web : HTML5 sémantique, CSS3 responsive, JavaScript ES6+ et intégration d\'APIs REST.',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Johns_Hopkins_University_logo.svg/240px-Johns_Hopkins_University_logo.svg.png',
+            image: '/logos/johns-hopkins.svg',
             credentialUrl: 'https://www.coursera.org/account/accomplishments',
             skills: JSON.stringify(['HTML5', 'CSS3', 'JavaScript', 'Responsive Design', 'REST API']) as any,
             featured: false,
@@ -249,7 +267,7 @@ async function main() {
             issuer: 'Google Cloud Skills Boost',
             date: '2024-03-01T00:00:00.000Z',
             description: 'Introduction aux grands modèles de langage (LLM) : architecture Transformer, fine-tuning, prompt engineering et déploiement sur Google Cloud.',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/272px-Google_2015_logo.svg.png',
+            image: '/logos/google-cloud.svg',
             credentialUrl: 'https://www.cloudskillsboost.google',
             skills: JSON.stringify(['LLM', 'Prompt Engineering', 'Google Cloud', 'Generative AI', 'Transformer']) as any,
             featured: false,
@@ -261,9 +279,7 @@ async function main() {
 }
 
 main()
-    .then(async () => {
-        await prisma.$disconnect();
-    })
+    .then(async () => { await prisma.$disconnect(); })
     .catch(async (e) => {
         console.error(e);
         await prisma.$disconnect();

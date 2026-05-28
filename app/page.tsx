@@ -113,15 +113,16 @@ export default async function HomePage() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 w-full">
+              <div className="grid grid-cols-4 gap-3 w-full">
                 {[
-                  { label: 'Projets', value: '5+' },
+                  { label: 'Repos GitHub', value: '69' },
+                  { label: 'Commits / an', value: '1K+' },
+                  { label: 'Organisations', value: '5' },
                   { label: 'Certifications', value: '6+' },
-                  { label: 'Technologies', value: '18+' },
                 ].map((stat) => (
-                  <div key={stat.label} className="rounded-xl border border-border/60 bg-card/40 backdrop-blur-sm p-4 text-center">
-                    <p className="text-2xl font-extrabold text-primary">{stat.value}</p>
-                    <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
+                  <div key={stat.label} className="rounded-xl border border-border/60 bg-card/40 backdrop-blur-sm p-3 text-center">
+                    <p className="text-xl font-extrabold text-primary">{stat.value}</p>
+                    <p className="text-[10px] text-muted-foreground mt-1 leading-tight">{stat.label}</p>
                   </div>
                 ))}
               </div>
