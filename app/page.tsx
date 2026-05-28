@@ -10,8 +10,6 @@ import { Project, Certificate } from '@/types';
 import { TechKeyboard } from '@/components/animations/TechKeyboard';
 import { CodeFlash } from '@/components/animations/CodeFlash';
 
-export const dynamic = 'force-dynamic';
-
 export default async function HomePage() {
   const [personalInfo, projectsRes, certificatesRes] = await Promise.all([
     getPersonalInfo(),
