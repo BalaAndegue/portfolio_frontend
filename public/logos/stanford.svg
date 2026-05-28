@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80">
+  <rect width="200" height="80" fill="#8C1515"/>
+  <text x="100" y="30" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">STANFORD</text>
+  <text x="100" y="52" font-family="Georgia, serif" font-size="11" fill="#F2A900" text-anchor="middle">ONLINE</text>
+  <line x1="20" y1="38" x2="180" y2="38" stroke="#F2A900" stroke-width="1"/>
+</svg>
