@@ -2,81 +2,123 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+/* ── Keyframes système ────────────────────────── */
+@keyframes scrollUp {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
 }
 
-@media (prefers-color-scheme: dark) {
+@keyframes floatUp {
+  0%   { transform: translateY(0)   translateX(0);   opacity: 0; }
+  8%   { opacity: 0.65; }
+  92%  { opacity: 0.4; }
+  100% { transform: translateY(-120px) translateX(8px); opacity: 0; }
+}
+
+@keyframes glitch {
+  0%,100% { clip-path: none; transform: none; }
+  10%      { clip-path: inset(40% 0 50% 0); transform: translate(-3px, 1px); }
+  20%      { clip-path: inset(80% 0 5%  0); transform: translate(3px, -1px); }
+  30%      { clip-path: none; transform: none; }
+}
+
+@keyframes borderPulse {
+  0%,100% { border-color: rgba(0,255,65,0.15); }
+  50%     { border-color: rgba(0,255,65,0.45); }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes blink-cursor {
+  0%,100% { opacity: 1; }
+  50%     { opacity: 0; }
+}
+
+/* ── Design tokens (dark system – toujours actif) ── */
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background:            240 40% 5%;
+    --foreground:            42  58% 86%;
+    --card:                  240 35% 8%;
+    --card-foreground:       42  58% 86%;
+    --popover:               240 35% 8%;
+    --popover-foreground:    42  58% 86%;
+    --primary:               211 99% 65%;
+    --primary-foreground:    240 40% 5%;
+    --secondary:             240 30% 11%;
+    --secondary-foreground:  42  58% 86%;
+    --muted:                 240 30% 11%;
+    --muted-foreground:      220 10% 59%;
+    --accent:                133 100% 50%;
+    --accent-foreground:     240 40% 5%;
+    --destructive:           0   84% 60%;
+    --destructive-foreground:42  58% 86%;
+    --border:                230 25% 14%;
+    --input:                 240 30% 11%;
+    --ring:                  211 99% 65%;
+    --radius:                0.5rem;
   }
 }
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-  }
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
-}
+  * { @apply border-border; }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
+  html { scroll-behavior: smooth; }
+
   body {
     @apply bg-background text-foreground;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
   }
+
+  ::selection {
+    background: rgba(0, 255, 65, 0.18);
+    color: #F0E6C8;
+  }
+
+  ::-webkit-scrollbar       { width: 5px; }
+  ::-webkit-scrollbar-track { background: #080812; }
+  ::-webkit-scrollbar-thumb { background: #1e2030; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(79,172,254,0.4); }
+}
+
+/* ── Hover utilities (server-rendered pages) ─── */
+.sys-card:hover          { border-color: rgba(79,172,254,0.28)  !important; }
+.sys-card-purple:hover   { border-color: rgba(167,139,250,0.28) !important; }
+.sys-card-green:hover    { border-color: rgba(0,255,65,0.28)    !important; }
+.sys-link:hover          { color: #F0E6C8 !important; }
+.sys-link-blue:hover     { color: #4facfe !important; }
+.sys-link-green:hover    { color: #00ff41 !important; }
+.sys-link-purple:hover   { color: #a78bfa !important; }
+.sys-btn-blue:hover      { background-color: rgba(79,172,254,0.1)   !important; }
+.sys-btn-purple:hover    { background-color: rgba(167,139,250,0.1)  !important; }
+.sys-btn-glass:hover     { background-color: rgba(255,255,255,0.06) !important; }
+.sys-btn-green:hover     { background-color: rgba(0,255,65,0.08)    !important; }
+.sys-skill:hover         { color: #00ff41 !important; border-color: rgba(0,255,65,0.4) !important; }
+.sys-glow-blue:hover     { box-shadow: 0 0 36px rgba(79,172,254,0.55) !important; }
+.sys-diplome:hover       { background-color: rgba(167,139,250,0.1) !important; }
+
+/* ── Helpers système ──────────────────────────── */
+.font-sys-mono { font-family: 'JetBrains Mono', 'Cascadia Code', monospace; }
+
+.text-cream   { color: #F0E6C8; }
+.text-green   { color: #00ff41; }
+.text-sysblue { color: #4facfe; }
+.text-purple  { color: #a78bfa; }
+.text-muted-sys { color: #8892a4; }
+
+.border-green-sys  { border-color: rgba(0,255,65,0.2); }
+.border-blue-sys   { border-color: rgba(79,172,254,0.2); }
+
+.glow-green  { box-shadow: 0 0 16px rgba(0,255,65,0.25); }
+.glow-blue   { box-shadow: 0 0 16px rgba(79,172,254,0.25); }
+
+/* animate-border-pulse utility */
+.animate-border-pulse { animation: borderPulse 2.5s ease-in-out infinite; }
+
+/* Screen scroll for DevScene terminal windows */
+.screen-scroll {
+  animation: scrollUp 10s linear infinite;
 }
