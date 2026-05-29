@@ -20,85 +20,52 @@ const NAV_LINKS = [
 
 export function Footer() {
   return (
-    <footer
-      style={{
-        backgroundColor: '#06060f',
-        borderTop: '1px solid rgba(0,255,65,0.1)',
-      }}
-    >
-      <div className="mx-auto max-w-7xl px-6 py-14 lg:px-8">
+    <footer className="bg-gray-50 border-t border-gray-200">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
 
           {/* Brand */}
           <div>
-            <Link href="/" className="flex items-center gap-2 mb-4 group w-fit">
-              <div
-                className="w-7 h-7 rounded flex items-center justify-center"
-                style={{
-                  border: '1px solid rgba(0,255,65,0.4)',
-                  backgroundColor: 'rgba(0,255,65,0.07)',
-                  boxShadow: '0 0 8px rgba(0,255,65,0.15)',
-                }}
-              >
-                <Terminal className="h-3.5 w-3.5" style={{ color: '#00ff41' }} />
+            <Link href="/" className="flex items-center gap-2 mb-4 w-fit group">
+              <div className="w-7 h-7 rounded flex items-center justify-center"
+                style={{ border: '1px solid rgba(79,172,254,0.4)', backgroundColor: 'rgba(79,172,254,0.07)' }}>
+                <Terminal className="h-3.5 w-3.5 text-[#4facfe]" />
               </div>
-              <span className="font-sys-mono font-bold text-base" style={{ color: '#F0E6C8' }}>
-                bala<span style={{ color: '#00ff41' }}>@</span>dev
+              <span className="font-sys-mono font-bold text-base text-gray-900">
+                bala<span className="text-[#4facfe]">.</span>dev
               </span>
             </Link>
-            <p className="text-sm leading-relaxed max-w-xs" style={{ color: '#8892a4' }}>
+            <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
               Développeur Full Stack & IA · Génie Informatique 4A · Yaoundé, Cameroun
             </p>
             <div className="flex items-center gap-3 mt-5">
-              <a
-                href="https://github.com/BalaAndegue"
-                target="_blank" rel="noopener noreferrer"
-                className="transition-opacity hover:opacity-80"
-                style={{ color: '#8892a4' }}
-                aria-label="GitHub"
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#F0E6C8'}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#8892a4'}
-              >
+              <a href="https://github.com/BalaAndegue" target="_blank" rel="noopener noreferrer"
+                className="text-gray-400 hover:text-gray-700 transition-colors" aria-label="GitHub">
                 <GhIcon className="h-5 w-5" />
               </a>
-              <a
-                href="https://www.linkedin.com/in/fran%C3%A7ois-lionnel-bala-andegue-0118612b2"
+              <a href="https://www.linkedin.com/in/fran%C3%A7ois-lionnel-bala-andegue-0118612b2"
                 target="_blank" rel="noopener noreferrer"
-                style={{ color: '#8892a4' }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#4facfe'}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#8892a4'}
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="h-5 w-5 transition-colors" />
+                className="text-gray-400 hover:text-[#4facfe] transition-colors" aria-label="LinkedIn">
+                <Linkedin className="h-5 w-5" />
               </a>
-              <a
-                href="mailto:balaandeguefrancoislionnel@gmail.com"
-                style={{ color: '#8892a4' }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#00ff41'}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#8892a4'}
-                aria-label="Email"
-              >
-                <Mail className="h-5 w-5 transition-colors" />
+              <a href="mailto:balaandeguefrancoislionnel@gmail.com"
+                className="text-gray-400 hover:text-[#059669] transition-colors" aria-label="Email">
+                <Mail className="h-5 w-5" />
               </a>
             </div>
           </div>
 
           {/* Navigation */}
           <div>
-            <h3 className="font-sys-mono text-xs tracking-widest uppercase mb-5" style={{ color: '#00ff41', opacity: 0.7 }}>
-              // Navigation
+            <h3 className="font-sys-mono text-xs tracking-widest uppercase text-gray-400 mb-5">
+              Navigation
             </h3>
             <ul className="space-y-2.5">
               {NAV_LINKS.map((l) => (
                 <li key={l.name}>
-                  <Link
-                    href={l.href}
-                    className="text-sm transition-colors flex items-center gap-2 group w-fit"
-                    style={{ color: '#8892a4' }}
-                    onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#F0E6C8'}
-                    onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#8892a4'}
-                  >
-                    <span className="font-sys-mono text-[10px]" style={{ color: 'rgba(0,255,65,0.4)' }}>›</span>
+                  <Link href={l.href}
+                    className="text-sm text-gray-500 hover:text-gray-900 transition-colors flex items-center gap-2 w-fit">
+                    <span className="text-[#4facfe] text-[10px] font-sys-mono opacity-60">›</span>
                     {l.name}
                   </Link>
                 </li>
@@ -108,53 +75,42 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="font-sys-mono text-xs tracking-widest uppercase mb-5" style={{ color: '#4facfe', opacity: 0.7 }}>
-              // Contact
+            <h3 className="font-sys-mono text-xs tracking-widest uppercase text-gray-400 mb-5">
+              Contact
             </h3>
             <ul className="space-y-3">
-              <li className="flex items-start gap-2.5">
-                <Mail className="h-4 w-4 mt-0.5 shrink-0" style={{ color: '#4facfe', opacity: 0.6 }} />
-                <span className="text-sm break-all" style={{ color: '#8892a4' }}>
-                  balaandeguefrancoislionnel@gmail.com
-                </span>
+              <li className="flex items-start gap-2.5 text-sm text-gray-500">
+                <Mail className="h-4 w-4 mt-0.5 shrink-0 text-gray-400" />
+                <span className="break-all">balaandeguefrancoislionnel@gmail.com</span>
               </li>
-              <li className="flex items-center gap-2.5">
-                <Phone className="h-4 w-4 shrink-0" style={{ color: '#4facfe', opacity: 0.6 }} />
-                <span className="text-sm" style={{ color: '#8892a4' }}>+237 656 616 751</span>
+              <li className="flex items-center gap-2.5 text-sm text-gray-500">
+                <Phone className="h-4 w-4 shrink-0 text-gray-400" />
+                +237 656 616 751
               </li>
-              <li className="flex items-center gap-2.5">
-                <MapPin className="h-4 w-4 shrink-0" style={{ color: '#4facfe', opacity: 0.6 }} />
-                <span className="text-sm" style={{ color: '#8892a4' }}>Yaoundé, Cameroun</span>
+              <li className="flex items-center gap-2.5 text-sm text-gray-500">
+                <MapPin className="h-4 w-4 shrink-0 text-gray-400" />
+                Yaoundé, Cameroun
               </li>
             </ul>
-
-            <div
-              className="mt-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
-              style={{
-                backgroundColor: 'rgba(0,255,65,0.07)',
-                border: '1px solid rgba(0,255,65,0.2)',
-              }}
-            >
+            <div className="mt-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200">
               <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
               </span>
-              <span className="font-sys-mono text-[10px]" style={{ color: '#00ff41' }}>
-                Disponible pour des projets
-              </span>
+              <span className="font-sys-mono text-[10px] text-emerald-700">Disponible pour des projets</span>
             </div>
           </div>
 
         </div>
       </div>
 
-      <div style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}>
-        <div className="mx-auto max-w-7xl px-6 py-4 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="font-sys-mono text-[11px]" style={{ color: '#8892a4', opacity: 0.6 }}>
+      <div className="border-t border-gray-200">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <p className="font-sys-mono text-[11px] text-gray-400">
             © {new Date().getFullYear()} Bala Andegue François Lionnel
           </p>
-          <p className="font-sys-mono text-[11px]" style={{ color: '#8892a4', opacity: 0.4 }}>
-            Built with Next.js · Prisma · Vercel
+          <p className="font-sys-mono text-[11px] text-gray-300">
+            Next.js · Prisma · Vercel
           </p>
         </div>
       </div>

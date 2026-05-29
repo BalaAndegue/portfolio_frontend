@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { ArrowRight, Download, Linkedin, Mail, ExternalLink, MapPin } from 'lucide-react';
 import { getPersonalInfo, getProjects, getCertificates } from '@/lib/actions';
 import { Project, Certificate } from '@/types';
-import { CodeFlash } from '@/components/animations/CodeFlash';
 import { DevScene } from '@/components/home/DevScene';
 
 function GhIcon({ className }: { className?: string }) {
@@ -24,9 +23,10 @@ export default async function HomePage() {
 
   if (!personalInfo) {
     return (
-      <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#080812' }}>
-        <p className="font-sys-mono text-sm" style={{ color: '#8892a4' }}>
-          {'> '}<code className="px-2 py-0.5 rounded" style={{ backgroundColor: '#0e0e1c', color: '#00ff41' }}>npx prisma db seed</code>
+      <div className="flex min-h-screen items-center justify-center bg-white">
+        <p className="text-sm text-gray-500">
+          Initialiser la DB :{' '}
+          <code className="px-2 py-0.5 rounded bg-gray-100 font-sys-mono text-xs">npx prisma db seed</code>
         </p>
       </div>
     );
@@ -36,78 +36,75 @@ export default async function HomePage() {
   const featuredCerts    = certificatesRes.data.filter((c: Certificate) => c.featured);
 
   return (
-    <div className="flex flex-col" style={{ backgroundColor: '#080812', color: '#F0E6C8' }}>
+    <div className="flex flex-col bg-white text-gray-900">
 
       {/* ══ HERO ══════════════════════════════════════════════ */}
-      <section
-        className="relative overflow-hidden min-h-screen flex items-center"
-        style={{ borderBottom: '1px solid rgba(0,255,65,0.08)' }}
-      >
-        <CodeFlash />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#080812]/90 via-transparent to-[#080812]/50 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#080812]/40 via-transparent to-[#080812] pointer-events-none" />
+      <section className="relative overflow-hidden min-h-screen flex items-center border-b border-gray-100">
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 -z-10"
+          style={{
+            backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(79,172,254,0.08) 1px, transparent 0)',
+            backgroundSize: '32px 32px',
+          }} />
+        {/* Soft gradient */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-blue-50/60 via-white to-white" />
 
-        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 w-full py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 w-full py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20 items-center">
 
-            {/* Identity */}
+            {/* ── Identity ── */}
             <div className="flex flex-col items-center text-center lg:items-start lg:text-left gap-6">
 
               {/* Avatar */}
               <div className="relative w-28 h-28 sm:w-32 sm:h-32">
-                <div className="absolute inset-0 rounded-full animate-ping opacity-20"
-                  style={{ border: '2px solid #00ff41', animationDuration: '3s' }} />
-                <div className="absolute inset-1 rounded-full"
-                  style={{ border: '1px solid rgba(79,172,254,0.2)' }} />
-                <div className="relative w-full h-full rounded-full overflow-hidden"
-                  style={{ boxShadow: '0 0 32px rgba(0,255,65,0.2), 0 0 0 2px rgba(0,255,65,0.3)' }}>
+                <div className="absolute inset-0 rounded-full"
+                  style={{ boxShadow: '0 0 0 4px white, 0 0 0 6px rgba(79,172,254,0.3)' }} />
+                <div className="relative w-full h-full rounded-full overflow-hidden">
                   <Image src={personalInfo.avatar} alt={personalInfo.name} fill className="object-cover" priority />
                 </div>
               </div>
 
-              {/* Availability */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full font-sys-mono text-xs"
-                style={{ border: '1px solid rgba(0,255,65,0.3)', backgroundColor: 'rgba(0,255,65,0.06)', color: '#00ff41' }}>
+              {/* Availability badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-sys-mono bg-emerald-50 border border-emerald-200 text-emerald-700">
                 <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
                 </span>
                 Disponible pour des projets
               </div>
 
               {/* Name */}
               <div>
-                <h1 className="text-4xl sm:text-5xl xl:text-6xl font-extrabold leading-tight" style={{ color: '#F0E6C8' }}>
+                <h1 className="text-4xl sm:text-5xl xl:text-6xl font-extrabold leading-tight text-gray-900">
                   {personalInfo.name}
                 </h1>
-                <p className="mt-3 text-base sm:text-lg font-sys-mono" style={{ color: '#4facfe' }}>
+                <p className="mt-3 text-base sm:text-lg font-sys-mono text-[#4facfe] font-medium">
                   {personalInfo.title}
                 </p>
-                <p className="mt-3 text-sm leading-7 max-w-lg" style={{ color: '#8892a4' }}>
+                <p className="mt-3 text-sm leading-7 text-gray-500 max-w-lg">
                   {personalInfo.bio}
                 </p>
               </div>
 
               {/* Location */}
-              <div className="flex items-center gap-2 text-sm" style={{ color: '#8892a4' }}>
-                <MapPin className="h-3.5 w-3.5" style={{ color: '#00ff41', opacity: 0.7 }} />
+              <div className="flex items-center gap-2 text-sm text-gray-400">
+                <MapPin className="h-3.5 w-3.5 text-[#4facfe]" />
                 {personalInfo.location}
               </div>
 
-              {/* CTA */}
+              {/* CTAs */}
               <div className="flex flex-wrap gap-3">
                 <Link href="/contact">
                   <button
-                    className="sys-glow-blue flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all"
-                    style={{ backgroundColor: '#4facfe', color: '#080812', boxShadow: '0 0 20px rgba(79,172,254,0.3)' }}
+                    className="sys-glow-blue flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-all"
+                    style={{ backgroundColor: '#4facfe', boxShadow: '0 4px 16px rgba(79,172,254,0.3)' }}
                   >
                     <Mail className="h-4 w-4" />
                     Me contacter
                   </button>
                 </Link>
                 <button
-                  className="sys-btn-glass flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all"
-                  style={{ border: '1px solid rgba(240,230,200,0.2)', color: '#F0E6C8' }}
+                  className="sys-btn-glass flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-gray-700 border border-gray-200 transition-all"
                 >
                   <Download className="h-4 w-4" />
                   Télécharger CV
@@ -118,23 +115,20 @@ export default async function HomePage() {
               <div className="flex items-center gap-5">
                 {personalInfo.github && (
                   <a href={personalInfo.github} target="_blank" rel="noopener noreferrer"
-                    className="sys-link flex items-center gap-1.5 text-xs transition-colors"
-                    style={{ color: '#8892a4' }}>
+                    className="sys-link flex items-center gap-1.5 text-sm text-gray-400 transition-colors">
                     <GhIcon className="h-4 w-4" />
                     <span className="hidden sm:inline">GitHub</span>
                   </a>
                 )}
                 {personalInfo.linkedin && (
                   <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer"
-                    className="sys-link-blue flex items-center gap-1.5 text-xs transition-colors"
-                    style={{ color: '#8892a4' }}>
+                    className="sys-link-blue flex items-center gap-1.5 text-sm text-gray-400 transition-colors">
                     <Linkedin className="h-4 w-4" />
                     <span className="hidden sm:inline">LinkedIn</span>
                   </a>
                 )}
                 <a href={`mailto:${personalInfo.email}`}
-                  className="sys-link-green flex items-center gap-1.5 text-xs transition-colors"
-                  style={{ color: '#8892a4' }}>
+                  className="sys-link-green flex items-center gap-1.5 text-sm text-gray-400 transition-colors">
                   <Mail className="h-4 w-4" />
                   <span className="hidden sm:inline">Email</span>
                 </a>
@@ -148,16 +142,15 @@ export default async function HomePage() {
                   { v: '5',   l: 'Orgs' },
                   { v: '6+',  l: 'Certifs' },
                 ].map(s => (
-                  <div key={s.l} className="text-center rounded-lg py-2.5 transition-colors"
-                    style={{ backgroundColor: 'rgba(14,14,28,0.8)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-lg font-extrabold" style={{ color: '#4facfe' }}>{s.v}</p>
-                    <p className="font-sys-mono text-[9px] mt-0.5" style={{ color: '#8892a4' }}>{s.l}</p>
+                  <div key={s.l} className="text-center rounded-lg py-2.5 bg-gray-50 border border-gray-100">
+                    <p className="text-lg font-extrabold text-[#4facfe]">{s.v}</p>
+                    <p className="font-sys-mono text-[9px] text-gray-400 mt-0.5">{s.l}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* DevScene desktop */}
+            {/* ── DevScene — terminaux sombres (absolument nécessaire pour le code) ── */}
             <div className="hidden lg:block">
               <DevScene />
             </div>
@@ -165,23 +158,18 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ══ SKILLS ══════════════════════════════════════════════ */}
-      <section className="py-20" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+      {/* ══ SKILLS ══ */}
+      <section className="py-20 bg-gray-50 border-b border-gray-100">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mb-10 text-center">
-            <p className="font-sys-mono text-xs mb-2 tracking-widest uppercase" style={{ color: 'rgba(0,255,65,0.6)' }}>// skills</p>
-            <h2 className="text-3xl font-bold" style={{ color: '#F0E6C8' }}>Compétences</h2>
+            <p className="font-sys-mono text-xs text-[#4facfe] mb-2 tracking-widest uppercase">// skills</p>
+            <h2 className="text-3xl font-bold text-gray-900">Compétences</h2>
           </div>
           <div className="flex flex-wrap justify-center gap-2.5 max-w-3xl mx-auto">
             {personalInfo.skills.map((skill: string) => (
               <span
                 key={skill}
-                className="sys-skill px-3 py-1.5 rounded text-xs font-sys-mono transition-all cursor-default"
-                style={{
-                  backgroundColor: 'rgba(14,14,28,0.9)',
-                  border: '1px solid rgba(79,172,254,0.15)',
-                  color: '#8892a4',
-                }}
+                className="sys-skill px-3 py-1.5 rounded-lg text-xs font-sys-mono cursor-default transition-all bg-white border border-gray-200 text-gray-600"
               >
                 {skill}
               </span>
@@ -190,51 +178,46 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ══ PROJECTS ══════════════════════════════════════════════ */}
-      <section className="py-20" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+      {/* ══ PROJECTS ══ */}
+      <section className="py-20 bg-white border-b border-gray-100">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mb-12 text-center">
-            <p className="font-sys-mono text-xs mb-2 tracking-widest uppercase" style={{ color: 'rgba(79,172,254,0.6)' }}>// projects</p>
-            <h2 className="text-3xl font-bold" style={{ color: '#F0E6C8' }}>Projets Récents</h2>
-            <p className="mt-3 text-sm" style={{ color: '#8892a4' }}>Applications actives en production</p>
+            <p className="font-sys-mono text-xs text-[#4facfe] mb-2 tracking-widest uppercase">// projects</p>
+            <h2 className="text-3xl font-bold text-gray-900">Projets Récents</h2>
+            <p className="mt-3 text-sm text-gray-500">Applications actives en production</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredProjects.map((project: Project) => (
               <div
                 key={project.id}
-                className="sys-card group rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
-                style={{
-                  backgroundColor: 'rgba(14,14,28,0.9)',
-                  border: '1px solid rgba(255,255,255,0.06)',
-                  boxShadow: '0 4px 24px rgba(0,0,0,0.3)',
-                }}
+                className="sys-card group rounded-xl overflow-hidden border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1"
               >
-                <div className="relative h-40 overflow-hidden">
+                <div className="relative h-44 overflow-hidden">
                   <Image
                     src={project.image} alt={project.title} fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e1c] via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-                    <span className="font-sys-mono text-[10px] px-2 py-0.5 rounded"
+                    <span className="font-sys-mono text-[10px] px-2 py-0.5 rounded text-white"
                       style={{
-                        backgroundColor: project.status === 'completed' ? 'rgba(0,255,65,0.15)' : 'rgba(79,172,254,0.15)',
-                        color: project.status === 'completed' ? '#00ff41' : '#4facfe',
-                        border: `1px solid ${project.status === 'completed' ? 'rgba(0,255,65,0.3)' : 'rgba(79,172,254,0.3)'}`,
+                        backgroundColor: project.status === 'completed'
+                          ? 'rgba(5,150,105,0.85)'
+                          : 'rgba(79,172,254,0.85)',
                       }}>
                       {project.status === 'completed' ? 'DONE' : 'ACTIVE'}
                     </span>
                     <div className="flex gap-2">
                       {project.githubUrl && (
                         <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
-                          className="text-white/50 hover:text-white transition-colors">
+                          className="text-white/70 hover:text-white transition-colors">
                           <GhIcon className="h-3.5 w-3.5" />
                         </a>
                       )}
                       {project.liveUrl && (
                         <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-                          className="text-white/50 hover:text-white transition-colors">
+                          className="text-white/70 hover:text-white transition-colors">
                           <ExternalLink className="h-3.5 w-3.5" />
                         </a>
                       )}
@@ -242,18 +225,16 @@ export default async function HomePage() {
                   </div>
                 </div>
                 <div className="p-4">
-                  <h3 className="font-semibold text-sm mb-1.5 line-clamp-1" style={{ color: '#F0E6C8' }}>{project.title}</h3>
-                  <p className="text-xs leading-relaxed line-clamp-2 mb-3" style={{ color: '#8892a4' }}>{project.description}</p>
+                  <h3 className="font-semibold text-sm mb-1.5 line-clamp-1 text-gray-900">{project.title}</h3>
+                  <p className="text-xs leading-relaxed line-clamp-2 mb-3 text-gray-500">{project.description}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {project.technologies.slice(0, 3).map((tech: string) => (
-                      <span key={tech} className="font-sys-mono text-[10px] px-1.5 py-0.5 rounded"
-                        style={{ backgroundColor: 'rgba(79,172,254,0.08)', border: '1px solid rgba(79,172,254,0.2)', color: '#4facfe' }}>
+                      <span key={tech} className="font-sys-mono text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-600 border border-blue-100">
                         {tech}
                       </span>
                     ))}
                     {project.technologies.length > 3 && (
-                      <span className="font-sys-mono text-[10px] px-1.5 py-0.5 rounded"
-                        style={{ color: '#8892a4', border: '1px solid rgba(255,255,255,0.08)' }}>
+                      <span className="font-sys-mono text-[10px] px-1.5 py-0.5 rounded text-gray-400 border border-gray-200">
                         +{project.technologies.length - 3}
                       </span>
                     )}
@@ -265,48 +246,42 @@ export default async function HomePage() {
 
           <div className="mt-10 text-center">
             <Link href="/project">
-              <button
-                className="sys-btn-blue inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-sys-mono transition-all"
-                style={{ border: '1px solid rgba(79,172,254,0.3)', color: '#4facfe' }}
-              >
-                Voir tous les projets
-                <ArrowRight className="h-4 w-4" />
+              <button className="sys-btn-blue inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-sys-mono border border-[#4facfe] text-[#4facfe] transition-all">
+                Voir tous les projets <ArrowRight className="h-4 w-4" />
               </button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ══ CERTIFICATIONS ══════════════════════════════════════════════ */}
-      <section className="py-20" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+      {/* ══ CERTIFICATIONS ══ */}
+      <section className="py-20 bg-gray-50 border-b border-gray-100">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mb-12 text-center">
-            <p className="font-sys-mono text-xs mb-2 tracking-widest uppercase" style={{ color: 'rgba(167,139,250,0.6)' }}>// certifications</p>
-            <h2 className="text-3xl font-bold" style={{ color: '#F0E6C8' }}>Certifications</h2>
+            <p className="font-sys-mono text-xs text-purple-500 mb-2 tracking-widest uppercase">// certifications</p>
+            <h2 className="text-3xl font-bold text-gray-900">Certifications</h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 max-w-3xl mx-auto">
             {featuredCerts.map((cert: Certificate) => (
               <div
                 key={cert.id}
-                className="sys-card-purple flex gap-4 p-4 rounded-xl transition-all"
-                style={{ backgroundColor: 'rgba(14,14,28,0.9)', border: '1px solid rgba(255,255,255,0.06)' }}
+                className="sys-card-purple flex gap-4 p-4 rounded-xl bg-white border border-gray-200 transition-all"
               >
                 {cert.image && (
-                  <div className="relative h-12 w-12 rounded-lg overflow-hidden shrink-0 bg-white">
+                  <div className="relative h-12 w-12 rounded-lg overflow-hidden shrink-0 bg-white border border-gray-100">
                     <Image src={cert.image} alt={cert.title} fill className="object-contain p-1" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-sm line-clamp-1 mb-0.5" style={{ color: '#F0E6C8' }}>{cert.title}</h3>
-                  <p className="font-sys-mono text-xs mb-1" style={{ color: '#a78bfa' }}>{cert.issuer}</p>
-                  <p className="font-sys-mono text-[10px]" style={{ color: '#8892a4' }}>
+                  <h3 className="font-semibold text-sm line-clamp-1 mb-0.5 text-gray-900">{cert.title}</h3>
+                  <p className="font-sys-mono text-xs text-purple-500 mb-1">{cert.issuer}</p>
+                  <p className="font-sys-mono text-[10px] text-gray-400">
                     {new Date(cert.date).toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' })}
                   </p>
                   {cert.credentialUrl && (
                     <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer"
-                      className="sys-link-blue inline-flex items-center gap-1 font-sys-mono text-[10px] mt-2 transition-colors"
-                      style={{ color: '#4facfe' }}>
+                      className="sys-link-blue inline-flex items-center gap-1 font-sys-mono text-[10px] mt-2 text-[#4facfe] transition-colors">
                       Voir le diplôme <ExternalLink className="h-3 w-3" />
                     </a>
                   )}
@@ -317,46 +292,42 @@ export default async function HomePage() {
 
           <div className="mt-10 text-center">
             <Link href="/certificates">
-              <button
-                className="sys-btn-purple inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-sys-mono transition-all"
-                style={{ border: '1px solid rgba(167,139,250,0.3)', color: '#a78bfa' }}
-              >
-                Voir toutes les certifications
-                <ArrowRight className="h-4 w-4" />
+              <button className="sys-btn-purple inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-sys-mono border border-purple-200 text-purple-500 transition-all">
+                Voir toutes les certifications <ArrowRight className="h-4 w-4" />
               </button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ══ CTA ══════════════════════════════════════════════ */}
-      <section className="py-24 relative overflow-hidden">
-        <CodeFlash />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#080812]/80 via-transparent to-[#080812]/80 pointer-events-none" />
+      {/* ══ CTA — sombre car section de rupture (absolument nécessaire) ══ */}
+      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#0a0a12' }}>
+        <div className="absolute inset-0 -z-10"
+          style={{
+            backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(79,172,254,0.06) 1px, transparent 0)',
+            backgroundSize: '24px 24px',
+          }} />
         <div className="relative z-10 mx-auto max-w-2xl px-6 text-center">
-          <p className="font-sys-mono text-xs mb-4 tracking-widest uppercase" style={{ color: 'rgba(0,255,65,0.6)' }}>
+          <p className="font-sys-mono text-xs mb-4 tracking-widest uppercase text-[#4facfe] opacity-70">
             {'$ ./contact.sh --init'}
           </p>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6" style={{ color: '#F0E6C8' }}>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-white">
             Travaillons ensemble
           </h2>
-          <p className="text-sm mb-10 leading-relaxed" style={{ color: '#8892a4' }}>
+          <p className="text-sm mb-10 leading-relaxed text-gray-400">
             Vous avez un projet en tête ? Discutons-en — de la conception à la mise en production.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link href="/contact">
               <button
-                className="sys-glow-blue flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm transition-all"
-                style={{ backgroundColor: '#4facfe', color: '#080812', boxShadow: '0 0 24px rgba(79,172,254,0.35)' }}
+                className="sys-glow-blue flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all"
+                style={{ backgroundColor: '#4facfe', boxShadow: '0 4px 20px rgba(79,172,254,0.35)' }}
               >
                 <Mail className="h-4 w-4" /> Me contacter
               </button>
             </Link>
             <Link href="/about">
-              <button
-                className="sys-btn-glass flex items-center gap-2 px-6 py-3 rounded-lg text-sm transition-all"
-                style={{ border: '1px solid rgba(240,230,200,0.2)', color: '#F0E6C8' }}
-              >
+              <button className="sys-btn-glass flex items-center gap-2 px-6 py-3 rounded-lg text-sm text-gray-300 border border-white/10 transition-all">
                 En savoir plus <ArrowRight className="h-4 w-4" />
               </button>
             </Link>
