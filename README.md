@@ -41,13 +41,28 @@ npm install
 
 ### Variables d'environnement
 
-Créez un fichier `.env` à la racine :
+Copie le fichier d'exemple puis remplis les valeurs :
+
+```bash
+cp .env.example .env
+```
+
+Ensuite génère un secret pour NextAuth :
+
+```bash
+openssl rand -base64 32
+# Colle le résultat dans .env → NEXTAUTH_SECRET
+```
+
+Le `.env` final doit contenir :
 
 ```env
 DATABASE_URL="file:./dev.db"
-NEXTAUTH_SECRET="une-chaine-aleatoire-longue"
 NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="<valeur générée par openssl>"
 ```
+
+> `.env` est dans `.gitignore` — il ne sera jamais committé. `.env.example` sert de référence et est committé.
 
 ### Initialiser la base de données
 
@@ -115,13 +130,27 @@ git push origin main
 
 ### 2. Importer sur Vercel
 
-Connectez votre repo GitHub sur [vercel.com](https://vercel.com) et ajoutez ces variables d'environnement dans les paramètres du projet :
+Connecte le repo GitHub sur [vercel.com](https://vercel.com).
 
-| Variable | Valeur |
-|----------|--------|
-| `DATABASE_URL` | `file:./dev.db` |
-| `NEXTAUTH_SECRET` | `openssl rand -base64 32` |
-| `NEXTAUTH_URL` | `https://votre-domaine.vercel.app` |
+`DATABASE_URL` et `NEXTAUTH_URL` sont déjà dans `.env.production` (committé).  
+**`NEXTAUTH_SECRET` doit être ajouté manuellement dans le dashboard Vercel** :
+
+```
+Vercel → Projet → Settings → Environment Variables
+  Nom   : NEXTAUTH_SECRET
+  Valeur: <résultat de openssl rand -base64 32>
+  Scope : Production + Preview
+```
+
+> Sans `NEXTAUTH_SECRET` en production, la connexion admin est impossible.
+
+Récapitulatif complet des variables :
+
+| Variable | Local (`.env`) | Vercel dashboard |
+|----------|---------------|-----------------|
+| `DATABASE_URL` | `file:./dev.db` | *(dans `.env.production`)* |
+| `NEXTAUTH_URL` | `http://localhost:3000` | *(dans `.env.production`)* |
+| `NEXTAUTH_SECRET` | valeur locale (`.env`) | **À définir obligatoirement** |
 
 ### 3. Commande de build
 
