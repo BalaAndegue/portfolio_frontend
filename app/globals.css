@@ -91,3 +91,13 @@
 
 /* Screen scroll (DevScene terminal windows, restent sombres) */
 .screen-scroll { animation: scrollUp 10s linear infinite; }
+
+/* Leaflet map z-index containment — header must always be above the map */
+.leaflet-pane,
+.leaflet-tile-pane,
+.leaflet-overlay-pane,
+.leaflet-shadow-pane,
+.leaflet-marker-pane,
+.leaflet-tooltip-pane,
+.leaflet-popup-pane { z-index: auto !important; }
+.leaflet-control { z-index: 900 !important; }

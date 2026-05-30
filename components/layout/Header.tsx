@@ -40,7 +40,7 @@ export function Header() {
   return (
     <>
       <header
-        className="sticky top-0 z-50 w-full transition-all duration-300"
+        className="sticky top-0 z-[1002] w-full transition-all duration-300"
         style={{
           backgroundColor: 'rgba(255,255,255,0.96)',
           backdropFilter: 'blur(12px)',
@@ -145,7 +145,7 @@ export function Header() {
 
       {/* ── Mobile overlay ── */}
       <div
-        className={`fixed inset-0 z-[60] transition-opacity duration-300 lg:hidden ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 z-[1003] transition-opacity duration-300 lg:hidden ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
         style={{ backgroundColor: 'rgba(0,0,0,0.25)', backdropFilter: 'blur(2px)' }}
         onClick={() => setOpen(false)}
         aria-hidden="true"
@@ -153,7 +153,7 @@ export function Header() {
 
       {/* ── Mobile drawer ── */}
       <aside
-        className={`fixed top-0 right-0 z-[70] h-full w-72 flex flex-col bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${open ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed top-0 right-0 z-[1004] h-full w-72 flex flex-col bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${open ? 'translate-x-0' : 'translate-x-full'}`}
         style={{ borderLeft: '1px solid #e5e7eb' }}
       >
         {/* Header */}

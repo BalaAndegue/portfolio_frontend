@@ -189,9 +189,10 @@ export default async function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredProjects.map((project: Project) => (
-              <div
+              <Link
                 key={project.id}
-                className="sys-card group rounded-xl overflow-hidden border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1"
+                href={`/project/${project.id}`}
+                className="sys-card group rounded-xl overflow-hidden border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 block"
               >
                 <div className="relative h-44 overflow-hidden">
                   <Image
@@ -240,7 +241,7 @@ export default async function HomePage() {
                     )}
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
