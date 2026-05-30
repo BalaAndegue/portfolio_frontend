@@ -109,9 +109,16 @@ export function Footer() {
           <p className="font-sys-mono text-[11px] text-gray-400">
             © {new Date().getFullYear()} Bala Andegue François Lionnel
           </p>
-          <p className="font-sys-mono text-[11px] text-gray-300">
-            Next.js · Prisma · Vercel
-          </p>
+          <div className="flex items-center gap-3">
+            <p className="font-sys-mono text-[11px] text-gray-300">
+              Next.js · Prisma · Vercel
+            </p>
+            <a href="/login"
+              className="font-sys-mono text-[10px] text-gray-200 hover:text-gray-500 transition-colors opacity-30 hover:opacity-70"
+              title="Administration">
+              ⚙
+            </a>
+          </div>
         </div>
       </div>
     </footer>

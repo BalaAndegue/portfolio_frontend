@@ -88,14 +88,14 @@ export function Header() {
 
           {/* Desktop right */}
           <div className="hidden lg:flex lg:items-center lg:gap-3">
-            {session?.user ? (
+            {session?.user && (session.user as any).role === 'admin' && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full p-0">
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={session.user.image || undefined} />
                       <AvatarFallback className="text-xs bg-blue-50 text-blue-600">
-                        {(session.user.name || 'U').charAt(0)}
+                        {(session.user.name || 'A').charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
@@ -105,30 +105,19 @@ export function Header() {
                     <p className="text-xs font-medium text-gray-900">{session.user.name}</p>
                     <p className="text-[10px] truncate text-gray-500">{session.user.email}</p>
                   </div>
-                  {(session.user as any).role === 'admin' && (
-                    <>
-                      <DropdownMenuItem asChild>
-                        <Link href="/admin" className="gap-2 cursor-pointer">
-                          <Settings className="h-3.5 w-3.5 text-gray-500" />
-                          Administration
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                    </>
-                  )}
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin" className="gap-2 cursor-pointer">
+                      <Settings className="h-3.5 w-3.5 text-gray-500" />
+                      Administration
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/' })} className="gap-2 cursor-pointer text-red-500">
                     <LogOut className="h-3.5 w-3.5" />
                     Déconnexion
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            ) : (
-              <Link href="/login">
-                <Button variant="outline" size="sm" className="gap-2 text-xs font-sys-mono">
-                  <User className="h-3.5 w-3.5" />
-                  login
-                </Button>
-              </Link>
             )}
           </div>
 
@@ -193,7 +182,7 @@ export function Header() {
 
         {/* Bottom */}
         <div className="px-4 py-5 border-t border-gray-100">
-          {session?.user ? (
+          {session?.user && (session.user as any).role === 'admin' && (
             <button
               onClick={() => signOut({ callbackUrl: '/' })}
               className="w-full flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm text-red-500 bg-red-50 hover:bg-red-100 transition-colors"
@@ -201,13 +190,6 @@ export function Header() {
               <LogOut className="h-4 w-4" />
               Déconnexion
             </button>
-          ) : (
-            <Link href="/login">
-              <Button variant="outline" className="w-full gap-2 font-sys-mono text-sm">
-                <User className="h-4 w-4" />
-                Se connecter
-              </Button>
-            </Link>
           )}
         </div>
       </aside>
